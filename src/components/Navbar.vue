@@ -8,14 +8,14 @@
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
-      
+
       <v-badge left color="accent" v-if="authUser">
         <template v-slot:badge>
           <span>6</span>
         </template>
         <v-icon>notifications_active</v-icon>
       </v-badge>
-      
+
       <v-badge color="accent" v-if="authUser">
         <template v-slot:badge>
           <span>12</span>
@@ -26,7 +26,8 @@
       <v-menu open-on-hover top offset-y v-if="authUser">
         <template v-slot:activator="{ on }">
           <v-btn flat v-on="on">
-            <v-icon left>person</v-icon> {{ authUser.firstname }}
+            <v-icon left>person</v-icon>
+            {{ authUser.firstname }}
           </v-btn>
         </template>
 
@@ -41,8 +42,7 @@
             <v-list-tile-title>{{ profilelink.text }}</v-list-tile-title>
           </v-list-tile>
           <v-list-tile @click="logout()">
-            <v-icon color="primary" left>power_settings_new</v-icon>
-            Sign Out
+            <v-icon color="primary" left>power_settings_new</v-icon>Sign Out
           </v-list-tile>
         </v-list>
       </v-menu>
@@ -50,7 +50,7 @@
       <v-menu open-on-hover top offset-y v-if="!authUser">
         <template v-slot:activator="{ on }">
           <v-btn flat v-on="on">
-            <v-icon left>person</v-icon> Guest
+            <v-icon left>person</v-icon>Guest
           </v-btn>
         </template>
 
@@ -66,7 +66,6 @@
           </v-list-tile>
         </v-list>
       </v-menu>
-
     </v-toolbar>
 
     <v-navigation-drawer v-model="drawer" app class="white">
@@ -75,7 +74,7 @@
           <v-avatar size="100">
             <img src="/e.png" alt>
           </v-avatar>
-          <p class="white--text sunheading mt-1">Ibeh Ernest Ekele</p>
+          <p class="white--text sunheading mt-1">{{ authUser.firstname + " " + authUser.surname }}</p>
         </v-flex>
       </v-layout>
       <v-layout column align-center class="blue-grey darken-4" v-if="!authUser">
@@ -175,17 +174,16 @@ export default {
 
   computed: {
     authUser() {
-      return this.$root.auth.access_token
+      return this.$root.auth.user;
     }
   },
 
   methods: {
     logout() {
       localStorage.removeItem("auth");
-      this.$root.auth = {}
-      this.$noty.success("Successfully logged out")
+      this.$root.auth = {};
+      this.$noty.success("Successfully logged out");
     }
   }
-
 };
 </script>

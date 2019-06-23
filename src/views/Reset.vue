@@ -6,12 +6,12 @@
           <v-card class="elevation-12">
             <v-toolbar dark color="primary">
               <v-toolbar-title>
-                <h2 class="text-uppercase display-1">Login Here</h2>
+                <h2 class="text-uppercase display-1">Choose Password</h2>
               </v-toolbar-title>
             </v-toolbar>
             <v-card-text>
-              <h4 class="subheading">Welcome, enter your credentials below to proceed</h4>
-              <v-form ref="loginform">
+              <h4 class="subheading">Enter your emaill and new password below</h4>
+              <v-form ref="resetform">
                 <v-text-field
                   prepend-icon="email"
                   name="email"
@@ -20,34 +20,43 @@
                   label="Email Address"
                   type="text"
                 ></v-text-field>
+                <div class="errors ml-4" v-if="errors.email">
+                  <small class="error--text" :key="error" v-for="error in errors.email">{{ error }}</small>
+                </div>
                 <v-text-field
                   prepend-icon="lock"
                   name="password"
                   label="Password"
                   v-model="password"
                   :rules="passwordRules"
+                  hint="At least 8 characters"
                   type="password"
                 ></v-text-field>
-                <v-checkbox v-model="remember_me" :label="`Keep me loged in for a while`"></v-checkbox>
+                <div class="errors ml-4" v-if="errors.password">
+                  <small
+                    class="error--text"
+                    :key="error"
+                    v-for="error in errors.password"
+                  >{{ error }}</small>
+                </div>
+                <v-text-field
+                  prepend-icon="lock"
+                  name="password_confirmation"
+                  label="Confirm Password"
+                  v-model="password_confirmation"
+                  :rules="confirmpasswordRules"
+                  hint="At least 8 characters"
+                  type="password"
+                ></v-text-field>
               </v-form>
             </v-card-text>
             <v-card-actions>
-              <span class="blue-grey--text text--darken-3 text-uppercase ml-3">
-                <router-link to="/resetPassword">Forgot password?</router-link>
-              </span>
               <v-spacer></v-spacer>
-              <v-btn :disabled="loading" color="primary" @click="login()">
-                {{ loading ? 'Authenticating...' : 'Sign In' }}
-                <v-icon right v-if="!loading">exit_to_app</v-icon>
+              <v-btn :disabled="loading" color="primary" @click="changePassword()">
+                <v-icon left v-if="!loading">save</v-icon>
+                {{ loading ? 'Proessing...' : 'Save Password' }}
               </v-btn>
             </v-card-actions>
-            <v-divider class="mt-3"></v-divider>
-            <div class="ma-3 pa-3">
-              <span class="blue-grey--text text--lighten-1">New to this platform? &nbsp; </span>
-              <span class="blue-grey--text text--darken-3">
-                <router-link to="/signup">REEGISTER HERE</router-link>
-              </span>
-            </div>
           </v-card>
         </v-flex>
       </v-layout>
@@ -58,24 +67,29 @@
 <script>
 import Axios from "axios";
 import config from "@/config";
+
 export default {
   beforeRouteEnter(to, from, next) {
     if (localStorage.getItem("auth")) {
-      return next({ path: "/" })
+      return next({ path: "/" });
     }
-    next()
+    next();
   },
 
   data() {
     return {
       drawer: null,
-      valid: false,
-      remember_me: false,
       loading: false,
+      checkbox: false,
       errors: {},
+      error: false,
+      ss: false,
+      errMsg: "",
+      ssMsg: "",
       response: "",
       email: "",
       password: "",
+      password_confirmation: "",
       emailRules: [
         v => !!v || "Email address name is required",
         v =>
@@ -86,38 +100,39 @@ export default {
       passwordRules: [
         v => !!v || "Password is required",
         v => v.length >= 8 || "Minimum of 8 characters required"
+      ],
+      confirmpasswordRules: [
+        v => !!v || "Password confirmation is required",
+        v => v.length >= 8 || "Minimum of 8 characters required",
+        v => v === this.password || "Passwors do not match"
       ]
     };
   },
 
   methods: {
-    login() {
-      if (this.$refs.loginform.validate()) {
-        this.loading = true;
-        console.log(this.email, this.password);
-
-        Axios.post(`${config.apiUrl}/auth/login`, {
+    changePassword() {
+      if (this.$refs.resetform.validate()) {
+          this.loading = true
+        Axios.post(`${config.apiUrl}/password/reset`, {
           email: this.email,
           password: this.password,
-          remember_me: this.remember_me
+          password_confirmation: this.password_confirmation,
+          token: this.$route.params.id
         })
           .then(response => {
             this.loading = false;
-            this.$root.auth = response.data;
-            console.log(response.data)
-            localStorage.setItem("auth", JSON.stringify(response.data))
-            this.$noty.success("Authentication successful.")
-            setTimeout(() => this.$router.push({ path: "/" }), 2000);
+            this.$noty.success("Dear " + response.data.surname + ", Password reset completed.")
+              setTimeout(() => this.$router.push({ path: "/login" }), 3000);
           })
           .catch(({ response }) => {
+            console.log(response.data.message);
             this.loading = false;
             this.error = true;
-            if (response.status === 401) {
-              this.$noty.error("These credentials do not match our records.")
-            } else {
-              this.errors = response.data.errors;
-              this.$noty.error("Authentication failed: " + response.data.message)
-            }
+            this.errors = response.data.message;
+            this.errMsg =
+              response.data.message +
+              " Ensure you clicked or copied the right link.";
+            // setTimeout(() => this.$router.push({ path: "/" }), 5000);
           });
       }
     }

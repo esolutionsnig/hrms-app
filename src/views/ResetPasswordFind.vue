@@ -6,14 +6,14 @@
           <v-card class="elevation-12">
             <v-toolbar dark color="primary">
               <v-toolbar-title>
-                <h2 class="text-uppercase display-1">Account Activation</h2>
+                <h2 class="text-uppercase display-1">Password Reset </h2>
               </v-toolbar-title>
             </v-toolbar>
             <v-card-text>
               <div class="text-center" v-if="loading">
                 <v-layout row wrap>
                   <v-flex d-flex xs7 sm9 md10>
-                    <h4>Wait while we activate your account</h4>
+                    <h4>Wait while we confirm your password reset request</h4>
                   </v-flex>
                   <v-flex d-flex xs5 sm3 md2>
                     <img src="/loada.gif" alt="Activating" width="20">
@@ -64,14 +64,12 @@ export default {
   methods: {
     getActivationKey() {
       Axios.get(
-        `${config.apiUrl}/auth/signup/activate/${this.$route.params.id}`
+        `${config.apiUrl}/password/find/${this.$route.params.id}`
       )
         .then((response) => {
           this.loading = false;
-          console.log(response)
-          this.ss = true;
-          this.ssMsg = "Account activation successful, You will be redirected to sign in page shortly.";
-          setTimeout(() => this.$router.push({ path: "/" }), 5000);
+          console.log(response.data.token)
+          this.$router.push({ path: "/Reset/" + response.data.token })
         })
         .catch(({ response }) => {
           console.log(response.data.errors);
@@ -79,7 +77,7 @@ export default {
           this.error = true;
           this.errors = response.data.errors;
           this.errMsg =
-            response.data.message +
+            response.data +
             " Ensure you clicked or copied the right link.";
             setTimeout(() => this.$router.push({ path: "/" }), 5000);
         });

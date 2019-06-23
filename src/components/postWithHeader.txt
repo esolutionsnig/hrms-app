@@ -1,0 +1,13 @@
+userData() {
+      Axios.get(`${config.apiUrl}/auth/user`, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.$root.auth.access_token
+        }
+      }).then((response) => {
+        const {} = response.data
+        this.$root.userData = response.data;
+        localStorage.setItem("userData", JSON.stringify(response.data));
+      });
+    },

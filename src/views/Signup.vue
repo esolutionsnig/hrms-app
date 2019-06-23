@@ -100,7 +100,6 @@
                 ></v-text-field>
               </v-form>
               <v-alert v-if="ss" :value="true" type="success">{{ ssMsg }}</v-alert>
-              <v-alert v-if="error" :value="true" type="error">{{ errMsg }}</v-alert>
             </v-card-text>
             <v-card-actions>
               <span class="blue-grey--text text--darken-3 ml-3">
@@ -128,8 +127,16 @@
 
 <script>
 import Axios from "axios";
+import config from "@/config";
 
 export default {
+  beforeRouteEnter(to, from, next) {
+    if (localStorage.getItem("auth")) {
+      return next({ path: "/" })
+    }
+    next()
+  },
+
   data() {
     return {
       drawer: null,
@@ -181,7 +188,7 @@ export default {
           this.password_confirmation
         );
 
-        Axios.post("http://xloutsourcingltd.com/careers/api/auth/signup", {
+        Axios.post(`${config.apiUrl}/auth/signup`, {
           surname: this.surname,
           firstname: this.firstname,
           othernames: this.othernames,
@@ -191,7 +198,7 @@ export default {
         })
           .then(response => {
             this.loading = false;
-            console.log(response.data);
+            console.log(response);
             this.ss = true;
             this.ssMsg =
               "Dear " +
@@ -206,7 +213,6 @@ export default {
           .catch(({ response }) => {
             console.log(response.data.errors);
             this.loading = false;
-            this.error = true;
             this.errors = response.data.errors;
             this.$noty.error("Registration failed: " + response.data.message)
           });

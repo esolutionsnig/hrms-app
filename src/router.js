@@ -8,6 +8,8 @@ import Accountsettings from './views/Accountsettings.vue'
 import Login from './views/Login.vue'
 import Signup from './views/Signup.vue'
 import ResetPassword from './views/ResetPassword.vue'
+import ResetPasswordFind from './views/ResetPasswordFind.vue'
+import Reset from './views/Reset.vue'
 import Activate from './views/Activate.vue'
 
 Vue.use(Router)
@@ -37,9 +39,19 @@ export default new Router({
       component: ResetPassword
     },
     {
+      path: '/password/find/:id',
+      name: 'resetPasswordFind',
+      component: ResetPasswordFind
+    },
+    {
       path: '/auth/signup/activate/:id',
       name: 'activate',
       component: Activate
+    },
+    {
+      path: '/reset/:id',
+      name: 'reset',
+      component: Reset
     },
     {
       path: '/projects',
