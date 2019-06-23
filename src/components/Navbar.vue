@@ -40,6 +40,10 @@
             <v-icon left>{{ profilelink.icon }}</v-icon>
             <v-list-tile-title>{{ profilelink.text }}</v-list-tile-title>
           </v-list-tile>
+          <v-list-tile @click="logout()">
+            <v-icon color="primary" left>power_settings_new</v-icon>
+            Sign Out
+          </v-list-tile>
         </v-list>
       </v-menu>
 
@@ -143,11 +147,6 @@ export default {
           icon: "settings",
           text: "Account Settings",
           route: "/account-settings"
-        },
-        {
-          icon: "power_settings_new",
-          text: "Sign Out",
-          route: "/signout"
         }
       ],
       sidemenulinks: [
@@ -176,7 +175,14 @@ export default {
 
   computed: {
     authUser() {
-      return this.$root.auth.user
+      return this.$root.auth.access_token
+    }
+  },
+
+  methods: {
+    logout() {
+      localStorage.removeItem("auth");
+      this.$root.auth = {}
     }
   }
 
