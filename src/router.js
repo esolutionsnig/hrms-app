@@ -1,6 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
+import Dashboard from './views/Dashboard.vue'
+import Projects from './views/Projects.vue'
+import Team from './views/Team.vue'
+import Profile from './views/Profile.vue'
+import Accountsettings from './views/Accountsettings.vue'
+import Login from './views/Login.vue'
+import Signup from './views/Signup.vue'
+import ResetPassword from './views/ResetPassword.vue'
+import Activate from './views/Activate.vue'
 
 Vue.use(Router)
 
@@ -10,16 +18,48 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home
+      name: 'dashboard',
+      component: Dashboard
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: Signup
+    },
+    {
+      path: '/resetPassword',
+      name: 'resetPassword',
+      component: ResetPassword
+    },
+    {
+      path: '/auth/signup/activate/:id',
+      name: 'activate',
+      component: Activate
+    },
+    {
+      path: '/projects',
+      name: 'projects',
+      component: Projects
+    },
+    {
+      path: '/team',
+      name: 'team',
+      component: Team
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: Profile
+    },
+    {
+      path: '/account-settings',
+      name: 'account-seetings',
+      component: Accountsettings
     }
   ]
 })
