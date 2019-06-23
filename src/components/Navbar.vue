@@ -183,6 +183,7 @@ export default {
     logout() {
       localStorage.removeItem("auth");
       this.$root.auth = {}
+      this.$noty.success("Successfully logged out")
     }
   }
 

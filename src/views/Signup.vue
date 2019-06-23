@@ -208,8 +208,7 @@ export default {
             this.loading = false;
             this.error = true;
             this.errors = response.data.errors;
-            this.errMsg = "Registration failed: " + response.data.message;
-              setTimeout(function(){ this.errMsg = '' }, 3000);
+            this.$noty.error("Registration failed: " + response.data.message)
           });
       }
     }

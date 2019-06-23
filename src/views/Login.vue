@@ -30,8 +30,6 @@
                 ></v-text-field>
                 <v-checkbox v-model="remember_me" :label="`Keep me loged in for a while`"></v-checkbox>
               </v-form>
-              <v-alert v-if="ss" :value="true" type="success">{{ ssMsg }}</v-alert>
-              <v-alert v-if="error" :value="true" type="error">{{ errMsg }}</v-alert>
             </v-card-text>
             <v-card-actions>
               <span class="blue-grey--text text--darken-3 text-uppercase ml-3">
@@ -66,11 +64,7 @@ export default {
       valid: false,
       remember_me: false,
       loading: false,
-      error: false,
       errors: {},
-      ss: false,
-      errMsg: "",
-      ssMsg: "",
       response: "",
       email: "",
       password: "",
@@ -103,20 +97,17 @@ export default {
             this.loading = false;
             this.$root.auth = response.data;
             localStorage.setItem("auth", JSON.stringify(response.data))
-            this.ss = true;
-            this.ssMsg = "Authentication successful.";
+            this.$noty.success("Authentication successful.")
             setTimeout(() => this.$router.push({ path: "/" }), 2000);
           })
           .catch(({ response }) => {
             this.loading = false;
             this.error = true;
             if (response.status === 401) {
-              this.errMsg = "These credentials do not match our records."
-              setTimeout(function(){ this.errMsg = '' }, 3000);
+              this.$noty.error("These credentials do not match our records.")
             } else {
               this.errors = response.data.errors;
-              this.errMsg = "Authentication failed: " + response.data.message;
-                setTimeout(function(){ this.errMsg = '' }, 3000);
+              this.$noty.error("Authentication failed: " + response.data.message)
             }
           });
       }
