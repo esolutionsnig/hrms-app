@@ -1,17 +1,218 @@
 <template>
-  <div class="profile">
-    <h2 class="grey--text primary--text">Profile Page</h2>
-    
-    <v-container fluid class="my-1">
-      <p>content</p>
+  <div class="dashboard">
+    <h2 class="grey--text primary--text text-uppercase display-1">Profile Page</h2>
+    <h4 class="subheading">View and manage your career account with us</h4>
+
+    <v-container fluid grid-list-md>
+      <v-layout row wrap>
+        <v-flex xs12 sm4>
+          <v-card>
+            <v-img v-if="userData.avatar === 'avatar.png'" src="/avatar.png" height="300px">
+              <v-layout column fill-height>
+                <v-spacer></v-spacer>
+
+                <v-card-title class="pl-5 pt-5">
+                  <div class="display-1 pl-5 pt-5">{{ userData.firstname + " " + userData.surname }}</div>
+                </v-card-title>
+              </v-layout>
+            </v-img>
+            <v-img v-else :src="userData.avatar" height="300px">
+              <v-layout column fill-height>
+                <v-spacer></v-spacer>
+
+                <v-card-title class="white--text pl-5 pt-5">
+                  <div class="display-1 pl-5 pt-5">{{ userData.firstname + " " + userData.surname }}</div>
+                </v-card-title>
+              </v-layout>
+            </v-img>
+
+            <v-list two-line>
+              <v-list-tile>
+                <v-list-tile-action>
+                  <v-icon color="primary">phone</v-icon>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                  <v-list-tile-title>+234 (0) 802 555 1234</v-list-tile-title>
+                  <v-list-tile-sub-title>Mobile Number</v-list-tile-sub-title>
+                </v-list-tile-content>
+
+                <v-list-tile-action>
+                  <v-icon>chat</v-icon>
+                </v-list-tile-action>
+              </v-list-tile>
+
+              <v-divider inset></v-divider>
+
+              <v-list-tile>
+                <v-list-tile-action>
+                  <v-icon color="primary">mail</v-icon>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ userData.email }}</v-list-tile-title>
+                  <v-list-tile-sub-title>Personal Email Address</v-list-tile-sub-title>
+                </v-list-tile-content>
+              </v-list-tile>
+
+              <v-divider inset></v-divider>
+
+              <v-list-tile>
+                <v-list-tile-action>
+                  <v-icon color="primary">date_range</v-icon>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ userData.created_at }}</v-list-tile-title>
+                  <v-list-tile-sub-title>Account created on</v-list-tile-sub-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs12 sm8>
+          <v-tabs centered color="blue-grey lighten-4" icons-and-text>
+            <v-tabs-slider color="primary"></v-tabs-slider>
+
+            <v-tab href="#tab-1">
+              Update Passport Image
+              <v-icon>add_a_photo</v-icon>
+            </v-tab>
+
+            <v-tab href="#tab-2">
+              Update Profile
+              <v-icon>person_pin</v-icon>
+            </v-tab>
+
+            <v-tab href="#tab-3">
+              Account Settings
+              <v-icon>settings</v-icon>
+            </v-tab>
+
+            <v-tab-item :value="'tab-1'">
+              <v-card flat>
+                <v-card-text>
+                  <h3>Update Passport Image</h3>
+                  <p>Ensure the image file is JPG or PNG and the size should be a 400 x 400 pixels</p>
+                  <picture-input
+                    width="400"
+                    height="400"
+                    margin="16"
+                    accept="image/jpeg, image/png"
+                    size="5"
+                    button-class="btn btn-danger"
+                    @change="onChange"
+                  ></picture-input>
+                  <v-spacer></v-spacer>
+                  <v-btn :disabled="loading" color="primary" @click="uploadPassportImage()">
+                    {{ loading ? 'Updating profile...' : 'Save Changes' }}
+                    <v-icon right v-if="!loading">cloud_upload</v-icon>
+                  </v-btn>
+                </v-card-text>
+              </v-card>
+            </v-tab-item>
+
+            <v-tab-item :value="'tab-2'">
+              <v-card flat>
+                <v-card-text>
+                  <h3>Update Profile</h3>
+                </v-card-text>
+              </v-card>
+            </v-tab-item>
+
+            <v-tab-item :value="'tab-3'">
+              <v-card flat>
+                <v-card-text>
+                  <h3>Account Settings</h3>
+                </v-card-text>
+              </v-card>
+            </v-tab-item>
+          </v-tabs>
+        </v-flex>
+      </v-layout>
     </v-container>
-    
   </div>
 </template>
 
 <script>
+import config from "@/config";
+import Axios from "axios";
+import PictureInput from "vue-picture-input";
+export default {
+  beforeRouteEnter(to, from, next) {
+    if (!localStorage.getItem("auth")) {
+      return next({ path: "/login" });
+    }
+    next();
+  },
 
-  export default {
-    
+  data() {
+    return {
+      text:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      dialog: false,
+      image: null,
+      loading: false
+    };
+  },
+
+  mounted() {
+    // console.log(process.env)
+  },
+
+  components: {
+    PictureInput
+  },
+
+  computed: {
+    userData() {
+      return this.$root.curuser;
+    }
+  },
+
+  methods: {
+    onChange(image) {
+      this.image = image;
+    },
+    uploadPassportImage() {
+      this.loading = true;
+      const form = new FormData();
+      form.append("file", this.image);
+      form.append("upload_preset", process.env.VUE_APP_CLOUDINARY_PRESET);
+      form.append("api_key", process.env.VUE_APP_CLOUDINARY_API_KEY);
+
+      Axios.post(process.env.VUE_APP_CLOUDINARY_URL, form)
+        .then(res =>
+          Axios.patch(
+            `${config.apiUrl}/auth/users/1/avatar`,
+            {
+              avatar: res.data.secure_url
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${this.$root.auth.access_token}`
+              }
+            }
+          )
+            .then(response => {
+              this.loading = false;
+              this.$root.curuser = response.data.user;
+              console.log(this.$root.curuser);
+              localStorage.setItem("curuser", JSON.stringify(response.data.user));
+              this.$noty.success("Passport image successfully updated.");
+              setTimeout(() => this.$router.push({ path: `/profile/${response.data.user.firstname}${response.data.user.id}` }), 2000);
+            })
+            .catch(({ response }) => {
+              this.loading = false;
+              this.$noty.error(`Update failed ${response.data.message}`);
+            })
+        )
+        .catch(err => {
+          this.$noty.error("Oops! Upload failed");
+          console.log(err);
+        });
+    }
   }
+};
 </script>

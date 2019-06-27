@@ -9,14 +9,14 @@
 
       <v-spacer></v-spacer>
 
-      <v-badge left color="accent" v-if="authUser">
+      <v-badge left color="accent" v-if="authUser" class="hidden-xs-only">
         <template v-slot:badge>
           <span>6</span>
         </template>
         <v-icon>notifications_active</v-icon>
       </v-badge>
 
-      <v-badge color="accent" v-if="authUser">
+      <v-badge color="accent" v-if="authUser" class="hidden-xs-only">
         <template v-slot:badge>
           <span>12</span>
         </template>
@@ -26,20 +26,21 @@
       <v-menu open-on-hover top offset-y v-if="authUser">
         <template v-slot:activator="{ on }">
           <v-btn flat v-on="on">
-            <v-icon left>person</v-icon>
-            {{ authUser.firstname }}
+            <v-icon left>person_pin</v-icon>
+            <span class="hidden-xs-only">{{ curUserData.firstname }}</span>
           </v-btn>
         </template>
 
         <v-list>
-          <v-list-tile
-            v-for="profilelink in profilelinks"
-            :key="profilelink.text"
-            router
-            :to="profilelink.route"
-          >
-            <v-icon left>{{ profilelink.icon }}</v-icon>
-            <v-list-tile-title>{{ profilelink.text }}</v-list-tile-title>
+          <v-list-tile>
+            <router-link :to="`/profile/${curUserData.firstname}${curUserData.id}`">
+              <v-icon left>person</v-icon>Profile
+            </router-link>
+          </v-list-tile>
+          <v-list-tile>
+            <router-link :to="`/account-settings/${curUserData.firstname}${curUserData.id}`">
+              <v-icon left>settings</v-icon>Settings
+            </router-link>
           </v-list-tile>
           <v-list-tile @click="logout()">
             <v-icon color="primary" left>power_settings_new</v-icon>Sign Out
@@ -72,15 +73,16 @@
       <v-layout column align-center class="blue-grey darken-4" v-if="authUser">
         <v-flex class="mt-4">
           <v-avatar size="100">
-            <img src="/e.png" alt>
+            <img v-if="curUserData.avatar === 'avatar.png'" src="/avatar.png" alt>
+            <img v-else :src="curUserData.avatar" alt>
           </v-avatar>
-          <p class="white--text sunheading mt-1">{{ authUser.firstname + " " + authUser.surname }}</p>
+          <p class="white--text sunheading mt-1">{{ curUserData.firstname + " " + curUserData.surname }}</p>
         </v-flex>
       </v-layout>
       <v-layout column align-center class="blue-grey darken-4" v-if="!authUser">
         <v-flex class="mt-4">
           <v-avatar size="100">
-            <img src="/default.png" alt>
+            <img src="/avatar.png" alt>
           </v-avatar>
           <p class="white--text sunheading mt-1">Guest Account</p>
         </v-flex>
@@ -140,12 +142,12 @@ export default {
         {
           icon: "person",
           text: "Profile",
-          route: "/profile"
+          route: "/profile/:id"
         },
         {
           icon: "settings",
           text: "Account Settings",
-          route: "/account-settings"
+          route: "/account-settings/:id"
         }
       ],
       sidemenulinks: [
@@ -174,7 +176,10 @@ export default {
 
   computed: {
     authUser() {
-      return this.$root.auth.user;
+      return this.$root.auth.access_token;
+    },
+    curUserData() {
+      return this.$root.curuser;
     }
   },
 

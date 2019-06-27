@@ -64,7 +64,7 @@ export default new Router({
       component: Team
     },
     {
-      path: '/profile',
+      path: '/profile/:id',
       name: 'profile',
       component: Profile
     },

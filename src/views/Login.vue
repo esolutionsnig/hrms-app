@@ -94,8 +94,6 @@ export default {
     login() {
       if (this.$refs.loginform.validate()) {
         this.loading = true;
-        console.log(this.email, this.password);
-
         Axios.post(`${config.apiUrl}/auth/login`, {
           email: this.email,
           password: this.password,
@@ -104,8 +102,9 @@ export default {
           .then(response => {
             this.loading = false;
             this.$root.auth = response.data;
-            console.log(response.data)
+            this.$root.curuser = response.data.user;
             localStorage.setItem("auth", JSON.stringify(response.data))
+            localStorage.setItem("curuser", JSON.stringify(response.data.user))
             this.$noty.success("Authentication successful.")
             setTimeout(() => this.$router.push({ path: "/" }), 2000);
           })

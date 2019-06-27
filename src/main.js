@@ -3,6 +3,7 @@ import './plugins/vuetify'
 import App from './App.vue'
 import router from './router'
 import VueNoty from 'vuejs-noty'
+import moment from 'moment'
 
 import 'vuejs-noty/dist/vuejs-noty.css'
 
@@ -13,14 +14,22 @@ Vue.use(VueNoty, {
   layout: 'topRight'
 })
 
+Vue.filter('formatDate', function(value) {
+  if (value) {
+    return moment(String(value)).format('MM/DD/YYYY hh:mm')
+  }
+})
+
 Vue.config.productionTip = false
 
 const authData = localStorage.getItem("auth")
+const authDataUser = localStorage.getItem("curuser")
 
 new Vue({
   router,
   data: {
-    auth: authData ? JSON.parse(authData) : {}
+    auth: authData ? JSON.parse(authData) : {},
+    curuser: authDataUser ? JSON.parse(authDataUser) : {}
   },
   render: h => h(App)
 }).$mount('#app')
