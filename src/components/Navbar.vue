@@ -16,14 +16,14 @@
         <v-icon>notifications_active</v-icon>
       </v-badge>
 
-      <v-badge color="accent" v-if="authUser" class="hidden-xs-only">
+      <v-badge left color="accent" v-if="authUser" class="hidden-xs-only ml-5">
         <template v-slot:badge>
           <span>12</span>
         </template>
         <v-icon>email</v-icon>
       </v-badge>
 
-      <v-menu open-on-hover top offset-y v-if="authUser">
+      <v-menu open-on-hover top offset-y v-if="authUser" class="ml-5">
         <template v-slot:activator="{ on }">
           <v-btn flat v-on="on">
             <v-icon left>person_pin</v-icon>

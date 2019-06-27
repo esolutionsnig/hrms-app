@@ -104,28 +104,118 @@
                     button-class="btn btn-danger"
                     @change="onChange"
                   ></picture-input>
+                </v-card-text>
+                <v-card-actions class="blue-grey lighten-4">
                   <v-spacer></v-spacer>
                   <v-btn :disabled="loading" color="primary" @click="uploadPassportImage()">
                     {{ loading ? 'Updating profile...' : 'Save Changes' }}
                     <v-icon right v-if="!loading">cloud_upload</v-icon>
                   </v-btn>
-                </v-card-text>
+                </v-card-actions>
               </v-card>
             </v-tab-item>
 
             <v-tab-item :value="'tab-2'">
               <v-card flat>
                 <v-card-text>
-                  <h3>Update Profile</h3>
+                  <h4 class="subheading my-3">Kindly fill all fields with valid data</h4>
+                  <v-form ref="profileform">
+                    <v-text-field
+                      prepend-icon="person"
+                      name="surname"
+                      v-model="surname"
+                      :rules="surnameRules"
+                      label="Family Name"
+                      type="text"
+                    ></v-text-field>
+                    <div class="errors ml-4" v-if="errors.surname">
+                      <small
+                        class="error--text"
+                        :key="error"
+                        v-for="error in errors.surname"
+                      >{{ error }}</small>
+                    </div>
+                    <v-text-field
+                      prepend-icon="person"
+                      name="firstname"
+                      v-model="firstname"
+                      :rules="firstnameRules"
+                      label="Given Name"
+                      type="text"
+                    ></v-text-field>
+                    <div class="errors ml-4" v-if="errors.firstname">
+                      <small
+                        class="error--text"
+                        :key="error"
+                        v-for="error in errors.firstname"
+                      >{{ error }}</small>
+                    </div>
+                    <v-text-field
+                      prepend-icon="person"
+                      name="othernames"
+                      v-model="othernames"
+                      :rules="othernamesRules"
+                      label="Additional Name"
+                      type="text"
+                    ></v-text-field>
+                    <div class="errors ml-4" v-if="errors.othernames">
+                      <small
+                        class="error--text"
+                        :key="error"
+                        v-for="error in errors.othernames"
+                      >{{ error }}</small>
+                    </div>
+                  </v-form>
                 </v-card-text>
+                <v-card-actions class="blue-grey lighten-4">
+                  <v-spacer></v-spacer>
+                  <v-btn :disabled="loading" color="primary" @click="updateProfile()">
+                    <v-icon left v-if="!loading">save</v-icon>
+                    {{ loading ? 'Processing...' : 'Save Changes' }}
+                  </v-btn>
+                </v-card-actions>
               </v-card>
             </v-tab-item>
 
             <v-tab-item :value="'tab-3'">
               <v-card flat>
                 <v-card-text>
-                  <h3>Account Settings</h3>
+                  <h4 class="subheading my-3">Enter your prefered password, note that you will be logged out after a successful request.</h4>
+                  <v-form ref="passwordform">
+                    <v-text-field
+                      prepend-icon="lock"
+                      name="password"
+                      label="Password"
+                      v-model="password"
+                      :rules="passwordRules"
+                      hint="At least 8 characters"
+                      type="password"
+                    ></v-text-field>
+                    <div class="errors ml-4" v-if="errors.password">
+                      <small
+                        class="error--text"
+                        :key="error"
+                        v-for="error in errors.password"
+                      >{{ error }}</small>
+                    </div>
+                    <v-text-field
+                      prepend-icon="lock"
+                      name="password_confirmation"
+                      label="Confirm Password"
+                      v-model="password_confirmation"
+                      :rules="confirmpasswordRules"
+                      hint="At least 8 characters"
+                      type="password"
+                    ></v-text-field>
+                  </v-form>
                 </v-card-text>
+                <v-card-actions class="blue-grey lighten-4">
+                  <v-spacer></v-spacer>
+                  <v-btn :disabled="loading" color="primary" @click="changePassword()">
+                    <v-icon left v-if="!loading">save</v-icon>
+                    {{ loading ? 'Processing...' : 'Save Changes' }}
+                  </v-btn>
+                </v-card-actions>
               </v-card>
             </v-tab-item>
           </v-tabs>
@@ -149,11 +239,29 @@ export default {
 
   data() {
     return {
-      text:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       dialog: false,
       image: null,
-      loading: false
+      loading: false,
+      error: false,
+      errors: {},
+      surname: this.$root.curuser.surname,
+      firstname: this.$root.curuser.firstname,
+      othernames: this.$root.curuser.othernames,
+      password: "",
+      password_confirmation: "",
+      response: "",
+      surnameRules: [v => !!v || "Family name is required"],
+      firstnameRules: [v => !!v || "Given name is required"],
+      othernamesRules: [v => !!v || "Additional name is required"],
+      passwordRules: [
+        v => !!v || "Password is required",
+        v => v.length >= 8 || "Minimum of 8 characters required"
+      ],
+      confirmpasswordRules: [
+        v => !!v || "Password confirmation is required",
+        v => v.length >= 8 || "Minimum of 8 characters required",
+        v => v === this.password || "Passwors do not match"
+      ]
     };
   },
 
@@ -185,7 +293,7 @@ export default {
       Axios.post(process.env.VUE_APP_CLOUDINARY_URL, form)
         .then(res =>
           Axios.patch(
-            `${config.apiUrl}/auth/users/1/avatar`,
+            `${config.apiUrl}/auth/users/${this.$root.curuser.id}/avatar`,
             {
               avatar: res.data.secure_url
             },
@@ -199,9 +307,20 @@ export default {
               this.loading = false;
               this.$root.curuser = response.data.user;
               console.log(this.$root.curuser);
-              localStorage.setItem("curuser", JSON.stringify(response.data.user));
+              localStorage.setItem(
+                "curuser",
+                JSON.stringify(response.data.user)
+              );
               this.$noty.success("Passport image successfully updated.");
-              setTimeout(() => this.$router.push({ path: `/profile/${response.data.user.firstname}${response.data.user.id}` }), 2000);
+              setTimeout(
+                () =>
+                  this.$router.push({
+                    path: `/profile/${response.data.user.firstname}${
+                      response.data.user.id
+                    }`
+                  }),
+                2000
+              );
             })
             .catch(({ response }) => {
               this.loading = false;
@@ -212,6 +331,77 @@ export default {
           this.$noty.error("Oops! Upload failed");
           console.log(err);
         });
+    },
+    // Update Profile Information
+    updateProfile() {
+      if (this.$refs.profileform.validate()) {
+        this.loading = true;
+        Axios.patch(
+          `${config.apiUrl}/auth/users/${this.$root.curuser.id}/update`,
+          {
+            surname: this.surname,
+            firstname: this.firstname,
+            othernames: this.othernames
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${this.$root.auth.access_token}`
+            }
+          }
+        )
+          .then(response => {
+            this.loading = false;
+            this.$root.curuser = response.data.user;
+            console.log(this.$root.curuser);
+            localStorage.setItem("curuser", JSON.stringify(response.data.user));
+            this.$noty.success("Profile successfully updated.");
+            setTimeout(
+              () =>
+                this.$router.push({
+                  path: `/profile/${response.data.user.firstname}${
+                    response.data.user.id
+                  }`
+                }),
+              2000
+            );
+          })
+          .catch(({ response }) => {
+            this.loading = false;
+            this.$noty.error(`Update failed ${response.data.message}`);
+          });
+      }
+    },
+    // Update Profile Password
+    changePassword() {
+      if (this.$refs.passwordform.validate()) {
+        this.loading = true;
+        Axios.patch(
+          `${config.apiUrl}/auth/users/${this.$root.curuser.id}/updatePassword`,
+          {
+            password: this.password,
+            password_confirmation: this.password_confirmation
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${this.$root.auth.access_token}`
+            }
+          }
+        )
+          .then(response => {
+            this.loading = false;
+            localStorage.clear();
+            this.$noty.success("Password successfully updated.");
+            setTimeout(
+              () =>
+                location.reload(),
+              2000
+            );
+          })
+          .catch(({ response }) => {
+            this.loading = false;
+            this.$noty.error(`Update failed ${response.data.message}`);
+          });
+      }
     }
   }
 };
