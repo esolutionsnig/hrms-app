@@ -4,8 +4,11 @@ import App from './App.vue'
 import router from './router'
 import VueNoty from 'vuejs-noty'
 import moment from 'moment'
+import VueSlimScroll from 'vue-slimscroll'
 
 import 'vuejs-noty/dist/vuejs-noty.css'
+
+Vue.use(VueSlimScroll)
 
 Vue.use(VueNoty, {
   timeout: 5000,

@@ -19,6 +19,7 @@
                   :rules="emailRules"
                   label="Email Address"
                   type="text"
+                  autocomplete="off"
                 ></v-text-field>
                 <v-text-field
                   prepend-icon="lock"

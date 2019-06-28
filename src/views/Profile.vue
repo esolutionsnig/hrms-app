@@ -5,73 +5,35 @@
 
     <v-container fluid grid-list-md>
       <v-layout row wrap>
-        <v-flex xs12 sm4>
-          <v-card>
-            <v-img v-if="userData.avatar === 'avatar.png'" src="/avatar.png" height="300px">
-              <v-layout column fill-height>
-                <v-spacer></v-spacer>
+        <v-flex xs12 sm3>
+          <div v-slimscroll="slimScrollOptions">
+            <v-card>
+              <v-list two-line class>
+                <v-list-tile class="text-uppercase text-center">
+                  <v-list-tile-content>
+                    <v-list-tile-title class="text-xs-center">Applicant Menu</v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile
+                  v-for="employmentlink in employmentlinks"
+                  :key="employmentlink.text"
+                  router
+                  :to="employmentlink.route"
+                >
+                  <v-list-tile-action>
+                    <v-icon color="primary">{{ employmentlink.icon }}</v-icon>
+                  </v-list-tile-action>
 
-                <v-card-title class="pl-5 pt-5">
-                  <div class="display-1 pl-5 pt-5">{{ userData.firstname + " " + userData.surname }}</div>
-                </v-card-title>
-              </v-layout>
-            </v-img>
-            <v-img v-else :src="userData.avatar" height="300px">
-              <v-layout column fill-height>
-                <v-spacer></v-spacer>
-
-                <v-card-title class="white--text pl-5 pt-5">
-                  <div class="display-1 pl-5 pt-5">{{ userData.firstname + " " + userData.surname }}</div>
-                </v-card-title>
-              </v-layout>
-            </v-img>
-
-            <v-list two-line>
-              <v-list-tile>
-                <v-list-tile-action>
-                  <v-icon color="primary">phone</v-icon>
-                </v-list-tile-action>
-
-                <v-list-tile-content>
-                  <v-list-tile-title>+234 (0) 802 555 1234</v-list-tile-title>
-                  <v-list-tile-sub-title>Mobile Number</v-list-tile-sub-title>
-                </v-list-tile-content>
-
-                <v-list-tile-action>
-                  <v-icon>chat</v-icon>
-                </v-list-tile-action>
-              </v-list-tile>
-
-              <v-divider inset></v-divider>
-
-              <v-list-tile>
-                <v-list-tile-action>
-                  <v-icon color="primary">mail</v-icon>
-                </v-list-tile-action>
-
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ userData.email }}</v-list-tile-title>
-                  <v-list-tile-sub-title>Personal Email Address</v-list-tile-sub-title>
-                </v-list-tile-content>
-              </v-list-tile>
-
-              <v-divider inset></v-divider>
-
-              <v-list-tile>
-                <v-list-tile-action>
-                  <v-icon color="primary">date_range</v-icon>
-                </v-list-tile-action>
-
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ userData.created_at }}</v-list-tile-title>
-                  <v-list-tile-sub-title>Account created on</v-list-tile-sub-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </v-list>
-          </v-card>
+                  <v-list-tile-content>
+                    <v-list-tile-title>{{ employmentlink.text }}</v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+              </v-list>
+            </v-card>
+          </div>
         </v-flex>
 
-        <v-flex xs12 sm8>
+        <v-flex xs12 sm6>
           <v-tabs centered color="blue-grey lighten-4" icons-and-text>
             <v-tabs-slider color="primary"></v-tabs-slider>
 
@@ -180,7 +142,9 @@
             <v-tab-item :value="'tab-3'">
               <v-card flat>
                 <v-card-text>
-                  <h4 class="subheading my-3">Enter your prefered password, note that you will be logged out after a successful request.</h4>
+                  <h4
+                    class="subheading my-3"
+                  >Enter your prefered password, note that you will be logged out after a successful request.</h4>
                   <v-form ref="passwordform">
                     <v-text-field
                       prepend-icon="lock"
@@ -220,6 +184,72 @@
             </v-tab-item>
           </v-tabs>
         </v-flex>
+
+        <v-flex xs12 sm3>
+          <v-card>
+            <v-img v-if="userData.avatar === 'avatar.png'" src="/avatar.png" height="300px">
+              <v-layout column fill-height>
+                <v-spacer></v-spacer>
+
+                <v-card-title class="pl-5 pt-5">
+                  <div class="display-1 pl-5 pt-5">{{ userData.firstname + " " + userData.surname }}</div>
+                </v-card-title>
+              </v-layout>
+            </v-img>
+            <v-img v-else :src="userData.avatar" height="300px">
+              <v-layout column fill-height>
+                <v-spacer></v-spacer>
+
+                <v-card-title class="white--text pl-5 pt-5">
+                  <div class="display-1 pl-5 pt-5">{{ userData.firstname + " " + userData.surname }}</div>
+                </v-card-title>
+              </v-layout>
+            </v-img>
+
+            <v-list two-line>
+              <v-list-tile>
+                <v-list-tile-action>
+                  <v-icon color="primary">phone</v-icon>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                  <v-list-tile-title>+234 (0) 802 555 1234</v-list-tile-title>
+                  <v-list-tile-sub-title>Mobile Number</v-list-tile-sub-title>
+                </v-list-tile-content>
+
+                <v-list-tile-action>
+                  <v-icon>chat</v-icon>
+                </v-list-tile-action>
+              </v-list-tile>
+
+              <v-divider inset></v-divider>
+
+              <v-list-tile>
+                <v-list-tile-action>
+                  <v-icon color="primary">mail</v-icon>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ userData.email }}</v-list-tile-title>
+                  <v-list-tile-sub-title>Personal Email Address</v-list-tile-sub-title>
+                </v-list-tile-content>
+              </v-list-tile>
+
+              <v-divider inset></v-divider>
+
+              <v-list-tile>
+                <v-list-tile-action>
+                  <v-icon color="primary">date_range</v-icon>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ userData.created_at }}</v-list-tile-title>
+                  <v-list-tile-sub-title>Account created on</v-list-tile-sub-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list>
+          </v-card>
+        </v-flex>
       </v-layout>
     </v-container>
   </div>
@@ -229,6 +259,7 @@
 import config from "@/config";
 import Axios from "axios";
 import PictureInput from "vue-picture-input";
+
 export default {
   beforeRouteEnter(to, from, next) {
     if (!localStorage.getItem("auth")) {
@@ -239,6 +270,117 @@ export default {
 
   data() {
     return {
+      slimScrollOptions: {
+        height: '650px',
+        size: 5
+      },
+      employmentlinks: [
+        {
+          icon: "account_box",
+          text: "Applicant Data Manager",
+          route: "/applicant-data-manager"
+        },
+        {
+          icon: "home",
+          text: "Residential Address",
+          route: "/residential-address"
+        },
+        {
+          icon: "home",
+          text: "Home Town Address",
+          route: "/home-town-address"
+        },
+        {
+          icon: "people_outline",
+          text: "Next Of Kin",
+          route: "/next-of-kin"
+        },
+        {
+          icon: "group_add",
+          text: "Dependants",
+          route: "/dependants"
+        },
+        {
+          icon: "group",
+          text: "Parents",
+          route: "/parents"
+        },
+        {
+          icon: "group",
+          text: "Guardian",
+          route: "/guardian"
+        },
+        {
+          icon: "school",
+          text: "Academic Qualification",
+          route: "/academic-qualification"
+        },
+        {
+          icon: "school",
+          text: "Professional Qualification",
+          route: "/professional-qualification"
+        },
+        {
+          icon: "school",
+          text: "Professional Membership",
+          route: "/professional-membership"
+        },
+        {
+          icon: "school",
+          text: "School Leaving Certificate",
+          route: "/school-leaving-certificate"
+        },
+        {
+          icon: "work",
+          text: "Employment History",
+          route: "/employment-history"
+        },
+        {
+          icon: "work_outline",
+          text: "National Youth Service Corps",
+          route: "/nysc"
+        },
+        {
+          icon: "school",
+          text: "General Information",
+          route: "/general"
+        },
+        {
+          icon: "fitness_center",
+          text: "Hobbies",
+          route: "/hobbies"
+        },
+        {
+          icon: "school",
+          text: "Social Membership",
+          route: "/social-membership"
+        },
+        {
+          icon: "account_balance",
+          text: "Banking Details",
+          route: "/banking-details"
+        },
+        {
+          icon: "accessibility",
+          text: "Self Disclosure",
+          route: "/self-disclosure"
+        },
+        {
+          icon: "supervisor_account",
+          text: "Referees",
+          route: "/referees"
+        },
+        {
+          icon: "check_box",
+          text: "Declaration",
+          route: "/declaration"
+        },
+        {
+          icon: "work",
+          text: "Employment Self-Assessment",
+          route: "/employment-self-assessment"
+        }
+      ],
       dialog: false,
       image: null,
       loading: false,
@@ -391,11 +533,7 @@ export default {
             this.loading = false;
             localStorage.clear();
             this.$noty.success("Password successfully updated.");
-            setTimeout(
-              () =>
-                location.reload(),
-              2000
-            );
+            setTimeout(() => location.reload(), 2000);
           })
           .catch(({ response }) => {
             this.loading = false;
@@ -406,3 +544,6 @@ export default {
   }
 };
 </script>
+
+<style>
+</style>
