@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard">
-    <h2 class="grey--text primary--text text-uppercase display-1">Profile Page</h2>
+    <h2 class="grey--text primary--text text-uppercase display-1">Profile</h2>
     <h4 class="subheading">View and manage your career account with us</h4>
 
     <v-container fluid grid-list-md>

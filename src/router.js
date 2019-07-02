@@ -1,16 +1,18 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Dashboard from './views/Dashboard.vue'
-import Projects from './views/Projects.vue'
-import Team from './views/Team.vue'
 import Profile from './views/Profile.vue'
-import Accountsettings from './views/Accountsettings.vue'
 import Login from './views/Login.vue'
 import Signup from './views/Signup.vue'
 import ResetPassword from './views/ResetPassword.vue'
 import ResetPasswordFind from './views/ResetPasswordFind.vue'
 import Reset from './views/Reset.vue'
 import Activate from './views/Activate.vue'
+import ApplicantDataManager from './views/ApplicationForms/ApplicantDataManager.vue'
+import ResidentialAddress from './views/ApplicationForms/ResidentialAddress.vue'
+import HomeTownAddress from './views/ApplicationForms/HomeTownAddress.vue'
+import NextOfKin from './views/ApplicationForms/NextOfKin.vue'
+import Dependants from './views/ApplicationForms/Dependants.vue'
 
 Vue.use(Router)
 
@@ -18,6 +20,31 @@ export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
+    {
+      path: '/applicant-data-manager',
+      name: 'applicant-data-manager',
+      component: ApplicantDataManager
+    },
+    {
+      path: '/residential-address',
+      name: 'residential-address',
+      component: ResidentialAddress
+    },
+    {
+      path: '/home-town-address',
+      name: 'home-town-address',
+      component: HomeTownAddress
+    },
+    {
+      path: '/next-of-kin',
+      name: 'next-of-kin',
+      component: NextOfKin
+    },
+    {
+      path: '/dependants',
+      name: 'dependants',
+      component: Dependants
+    },
     {
       path: '/',
       name: 'dashboard',
@@ -54,24 +81,9 @@ export default new Router({
       component: Reset
     },
     {
-      path: '/projects',
-      name: 'projects',
-      component: Projects
-    },
-    {
-      path: '/team',
-      name: 'team',
-      component: Team
-    },
-    {
       path: '/profile/:id',
       name: 'profile',
       component: Profile
-    },
-    {
-      path: '/account-settings',
-      name: 'account-seetings',
-      component: Accountsettings
     }
   ]
 })
