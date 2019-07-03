@@ -57,7 +57,7 @@
                       <v-list-tile>
                         <v-list-tile-content>
                           <v-list-tile-sub-title>Home Address</v-list-tile-sub-title>
-                          <v-list-tile-title>{{ nok.office_address }}</v-list-tile-title>
+                          <v-list-tile-title>{{ nok.home_address }}</v-list-tile-title>
                         </v-list-tile-content>
                       </v-list-tile>
                     </v-flex>
@@ -316,7 +316,6 @@ export default {
       )
         .then(response => {
           if (response.data.data.length != 0) {
-            console.log(response.data.data[0]);
             this.$root.curusernok = response.data.data[0];
             localStorage.setItem(
               "curusernok",
@@ -358,7 +357,7 @@ export default {
               "Applicant Next Of Kin Successfully Updated."
             );
             console.log(response.data);
-            setTimeout(() => location.reload(), 3000);
+            this.getNextOfKin()
           })
           .catch(({ response }) => {
             console.log(response.data);
@@ -394,7 +393,7 @@ export default {
               "Applicant Next Of Kin Successfully Created."
             );
             console.log(response.data);
-            setTimeout(() => location.reload(), 3000);
+            this.getNextOfKin()
           })
           .catch(({ response }) => {
             console.log(response.data);

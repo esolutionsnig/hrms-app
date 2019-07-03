@@ -13,6 +13,7 @@ import ResidentialAddress from './views/ApplicationForms/ResidentialAddress.vue'
 import HomeTownAddress from './views/ApplicationForms/HomeTownAddress.vue'
 import NextOfKin from './views/ApplicationForms/NextOfKin.vue'
 import Dependants from './views/ApplicationForms/Dependants.vue'
+import Parents from './views/ApplicationForms/Parents.vue'
 
 Vue.use(Router)
 
@@ -44,6 +45,11 @@ export default new Router({
       path: '/dependants',
       name: 'dependants',
       component: Dependants
+    },
+    {
+      path: '/parents',
+      name: 'parents',
+      component: Parents
     },
     {
       path: '/',

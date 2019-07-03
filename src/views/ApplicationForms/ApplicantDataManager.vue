@@ -857,13 +857,7 @@ export default {
             this.loading = false;
             this.$noty.success("Applicant Data Manager Successfully Updated.");
             console.log(response.data);
-            setTimeout(
-              () =>
-                this.$router.push({
-                  path: "/applicant-data-manager"
-                }),
-              4000
-            );
+            this.getApplicantDataManagers()
           })
           .catch(({ response }) => {
             console.log(response.data);
@@ -911,7 +905,7 @@ export default {
             this.loading = false;
             this.$noty.success("Applicant Data Manager Successfully Created.");
             console.log(response.data);
-            setTimeout(() => location.reload(), 3000);
+            this.getApplicantDataManagers()
           })
           .catch(({ response }) => {
             console.log(response.data);

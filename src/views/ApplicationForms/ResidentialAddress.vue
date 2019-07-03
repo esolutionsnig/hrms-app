@@ -412,7 +412,6 @@ export default {
       )
         .then(response => {
           if (response.data.data.length != 0) {
-            console.log(response.data.data[0]);
             this.$root.curuserra = response.data.data[0];
             localStorage.setItem(
               "curuserra",
@@ -456,7 +455,7 @@ export default {
             this.loading = false;
             this.$noty.success("Applicant Address Successfully Updated.");
             console.log(response.data);
-            setTimeout(() => location.reload(), 3000);
+            this.getResidentialAddress()
           })
           .catch(({ response }) => {
             console.log(response.data);
@@ -493,7 +492,7 @@ export default {
             this.loading = false;
             this.$noty.success("Applicant Address Successfully Created.");
             console.log(response.data);
-            setTimeout(() => location.reload(), 3000);
+            this.getResidentialAddress()
           })
           .catch(({ response }) => {
             console.log(response.data);

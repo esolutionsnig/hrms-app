@@ -347,6 +347,7 @@ export default {
       town: this.$root.curuserhta.town,
       district: this.$root.curuserhta.district,
       region: this.$root.curuserhta.region,
+      home_phone: this.$root.curuserhta.home_phone,
       response: "",
       landmarksRules: [v => !!v || "Popular spot is required"],
       residentialRules: [v => !!v || "Residential area is required"],
@@ -373,7 +374,6 @@ export default {
       )
         .then(response => {
           if (response.data.data.length != 0) {
-            console.log(response.data.data[0]);
             this.$root.curuserhta = response.data.data[0];
             localStorage.setItem(
               "curuserhta",
@@ -416,7 +416,7 @@ export default {
             this.loading = false;
             this.$noty.success("Applicant Home Town Address Successfully Updated.");
             console.log(response.data);
-            setTimeout(() => location.reload(), 3000);
+            this.getHomeTownAddress()
           })
           .catch(({ response }) => {
             console.log(response.data);
@@ -452,7 +452,7 @@ export default {
             this.loading = false;
             this.$noty.success("Applicant Home Town Address Successfully Created.");
             console.log(response.data);
-            setTimeout(() => location.reload(), 3000);
+            this.getHomeTownAddress()
           })
           .catch(({ response }) => {
             console.log(response.data);
