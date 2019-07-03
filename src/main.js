@@ -39,6 +39,7 @@ const authDataHta = localStorage.getItem("curuserhta")
 const authDataNok = localStorage.getItem("curusernok")
 const authDataDep = localStorage.getItem("curuserdep")
 const authDataParent = localStorage.getItem("curuserparent")
+const authDataGuardian = localStorage.getItem("curuserguardian")
 
 new Vue({
   router,
@@ -50,7 +51,8 @@ new Vue({
     curuserhta: authDataHta ? JSON.parse(authDataHta) : {},
     curusernok: authDataNok ? JSON.parse(authDataNok) : {},
     curuserdep: authDataDep ? JSON.parse(authDataDep) : {},
-    curuserparent: authDataDep ? JSON.parse(authDataParent) : {}
+    curuserparent: authDataParent ? JSON.parse(authDataParent) : {},
+    curuserguardian: authDataGuardian ? JSON.parse(authDataGuardian) : {}
   },
   render: h => h(App)
 }).$mount('#app')
