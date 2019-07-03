@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard">
-    <h2 class="grey--text primary--text text-uppercase display-1">Dependants</h2>
-    <h4 class="subheading">View and manage your dependants information</h4>
+    <h2 class="grey--text primary--text text-uppercase display-1">Academic Qualification</h2>
+    <h4 class="subheading">View and manage your academic qualification information</h4>
 
     <v-container fluid grid-list-md>
       <v-layout row wrap>
@@ -21,15 +21,14 @@
             <v-card-text>
               <v-data-table
                 :headers="headers"
-                :items="dependants"
+                :items="aes"
                 :search="search"
                 class="elevation-1"
               >
                 <template v-slot:items="props">
-                  <td>{{ props.item.dependant_name }}</td>
-                  <td>{{ props.item.relationship }}</td>
-                  <td>{{ props.item.date_of_birth }}</td>
-                  <td>{{ props.item.gender }}</td>
+                  <td>{{ props.item.institution }}</td>
+                  <td>{{ props.item.dates }}</td>
+                  <td>{{ props.item.qualify }}</td>
                   <td>
                     <v-btn
                       :disabled="deleting"
@@ -53,7 +52,7 @@
             <v-card-actions class="blue-grey lighten-4">
               <v-spacer></v-spacer>
               <v-btn color="secondary" @click="disabled = (disabled + 1) % 2">
-                Create Dependant
+                Create Academic Qualification
                 <v-icon right>arrow_right_alt</v-icon>
               </v-btn>
             </v-card-actions>
@@ -67,9 +66,9 @@
                 <v-layout row wrap>
                   <v-flex xs12>
                     <v-text-field
-                      name="dependant_name"
-                      v-model="dependant_name"
-                      label="Dependant Name"
+                      name="institution"
+                      v-model="institution"
+                      label="Institution Name"
                       type="text"
                       :rules="nameRules"
                       :disabled="disabled == 1 ? true : false"
@@ -80,57 +79,26 @@
                 <v-layout row wrap>
                   <v-flex xs12>
                     <v-text-field
-                      name="relationship"
-                      v-model="relationship"
-                      label="Relationship"
+                      name="date_of_attendance"
+                      v-model="date_of_attendance"
+                      label="Dates Of Attendance"
                       type="text"
-                      :rules="relationshipRules"
+                      :rules="dateOfAttendanceRules"
                       :disabled="disabled == 1 ? true : false"
                     ></v-text-field>
                   </v-flex>
                 </v-layout>
 
                 <v-layout row wrap>
-                  <v-flex xs12 sm12>
-                    <v-dialog
-                      ref="dialog"
-                      v-model="modal"
-                      :return-value.sync="birth_date"
-                      persistent
-                      lazy
-                      full-width
-                      width="290px"
-                    >
-                      <template v-slot:activator="{ on }">
-                        <v-text-field
-                          v-model="birth_date"
-                          label="Date Of Birth Picker"
-                          prepend-icon="event"
-                          readonly
-                          v-on="on"
-                          :rules="birthDateRules"
-                          :disabled="disabled == 1 ? true : false"
-                        ></v-text-field>
-                      </template>
-                      <v-date-picker v-model="birth_date" scrollable>
-                        <v-spacer></v-spacer>
-                        <v-btn flat color="primary" @click="modal = false">Cancel</v-btn>
-                        <v-btn flat color="primary" @click="$refs.dialog.save(birth_date)">OK</v-btn>
-                      </v-date-picker>
-                    </v-dialog>
-                  </v-flex>
-                </v-layout>
-
-                <v-layout row wrap>
-                  <v-flex xs12 sm12>
-                    <v-select
-                      name="gender"
-                      :items="genders"
-                      v-model="gender"
-                      label="Gender"
-                      :rules="genderRules"
+                  <v-flex xs12>
+                    <v-text-field
+                      name="qualification"
+                      v-model="qualification"
+                      label="Qualification"
+                      type="text"
+                      :rules="qualificationRules"
                       :disabled="disabled == 1 ? true : false"
-                    ></v-select>
+                    ></v-text-field>
                   </v-flex>
                 </v-layout>
               </v-form>
@@ -163,7 +131,7 @@ export default {
 
   mounted() {
     // console.log(process.env)
-    this.getDependants();
+    this.getAcademicQualifications();
   },
 
   data() {
@@ -171,62 +139,57 @@ export default {
       search: "",
       headers: [
         {
-          text: "Dependant's Name",
+          text: "Institution's Name",
           align: "left",
           sortable: false,
           value: "name"
         },
-        { text: "Relationship", value: "relationship" },
-        { text: "Date Of Birth", value: "dob" },
-        { text: "Gender", value: "gender" },
+        { text: "Dates Of Attendance", value: "dates" },
+        { text: "Qualification", value: "qualify" },
         { text: "ACTION", value: "action" }
       ],
-      dependants: this.$root.curuserdep,
-      modal: false,
+      aes: this.$root.curuserae,
       disabled: 1,
       loading: false,
       deleting: false,
       error: false,
       errors: {},
-      genders: ["Male", "Female", "Trans Gender", "Others"],
-      dep_id: "",
-      dependant_name: "",
-      relationship: "",
-      birth_date: "",
-      gender: "",
+      ae_id: "",
+      institution: "",
+      date_of_attendance: "",
+      qualification: "",
       response: "",
-      nameRules: [v => !!v || "Full name is required"],
-      relationshipRules: [v => !!v || "Relationship is required"],
-      genderRules: [v => !!v || "Gender is required"],
-      birthDateRules: [v => !!v || "Date of birth is required"]
+      nameRules: [v => !!v || "Institution name is required"],
+      dateOfAttendanceRules: [v => !!v || "Date of attendance is required"],
+      qualificationRules: [v => !!v || "Qualification is required"]
     };
   },
     
   computed: {
-    dep() {
-      return this.$root.curuserdep;
+    ae() {
+      return this.$root.curuserae;
     }
   },
 
   methods: {
     // Get Applicant Data From Api
-    getDependants() {
-      Axios.get(`${config.apiUrl}/users/${this.$root.curuser.id}/dependants`)
+    getAcademicQualifications() {
+      Axios.get(`${config.apiUrl}/users/${this.$root.curuser.id}/academiceducations`)
         .then(response => {
           if (response.data.data.length != 0) {
-            this.$root.curuserdep = response.data.data;
+            this.$root.curuserae = response.data.data;
             localStorage.setItem(
-              "curuserdep",
+              "curuserae",
               JSON.stringify(response.data.data)
             );
           } else {
             console.log("b");
-            this.$root.curuserdep = {};
+            this.$root.curuserae = {};
           }
         })
         .catch(response => {
           console.log(response.data);
-          localStorage.removeItem("curuserdep");
+          localStorage.removeItem("curuserae");
         });
     },
 
@@ -235,13 +198,12 @@ export default {
         this.loading = true;
         this.disabled = 1
         Axios.post(
-          `${config.apiUrl}/users/${this.$root.curuser.id}/dependants`,
+          `${config.apiUrl}/users/${this.$root.curuser.id}/academiceducations`,
           {
             user_id: this.$root.curuser.id,
-            dependant_name: this.dependant_name,
-            relationship: this.relationship,
-            date_of_birth: this.birth_date,
-            gender: this.gender
+            institution: this.institution,
+            date_of_attendance: this.date_of_attendance,
+            qualification: this.qualification
           },
           {
             headers: {
@@ -253,8 +215,9 @@ export default {
             this.loading = false;
             this.disabled = 0
             console.log(response.data);
-            this.$noty.success("Applicant Dependant Successfully Created.");
-            this.getDependants()
+            this.$noty.success("Applicant Academic Qualification Successfully Created.");
+            this.getAcademicQualifications()
+            setTimeout(() => location.reload(), 2000);
           })
           .catch(({ response }) => {
             console.log(response.data);
@@ -269,7 +232,7 @@ export default {
       if (id) {
         this.deleting = true;
         Axios.delete(
-          `${config.apiUrl}/users/${this.$root.curuser.id}/dependants/${id}`,
+          `${config.apiUrl}/users/${this.$root.curuser.id}/academiceducations/${id}`,
           {
             headers: {
               Authorization: `Bearer ${this.$root.auth.access_token}`
@@ -278,9 +241,10 @@ export default {
         )
           .then(response => {
             this.deleting = false;
-            this.$noty.success("Applicant Dependant Successfully Deleted.");
+            this.$noty.success("Applicant Academic Qualification Successfully Deleted.");
             console.log(response.data);
-            this.getDependants()
+            this.getAcademicQualifications()
+            setTimeout(() => location.reload(), 2000);
           })
           .catch(({ response }) => {
             console.log(response.data);

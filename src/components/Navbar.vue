@@ -323,6 +323,12 @@ export default {
       this.$root.curuserparent = {};
       localStorage.removeItem("curuserguardian");
       this.$root.curuserguardian = {};
+      localStorage.removeItem("curuserae");
+      this.$root.curuserae = {};
+      localStorage.removeItem("curuserpe");
+      this.$root.curuserpe = {};
+      localStorage.removeItem("curuserpm");
+      this.$root.curuserpm = {};
       this.$noty.success("Successfully logged out");
       location.reload()
     }

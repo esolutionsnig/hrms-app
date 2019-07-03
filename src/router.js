@@ -15,6 +15,9 @@ import NextOfKin from './views/ApplicationForms/NextOfKin.vue'
 import Dependants from './views/ApplicationForms/Dependants.vue'
 import Parents from './views/ApplicationForms/Parents.vue'
 import Guardian from './views/ApplicationForms/Guardian.vue'
+import AcademicQualification from './views/ApplicationForms/AcademicQualification.vue'
+import ProfessionalQualification from './views/ApplicationForms/ProfessionalQualification.vue'
+import ProfessionalMembership from './views/ApplicationForms/ProfessionalMembership.vue'
 
 Vue.use(Router)
 
@@ -56,6 +59,21 @@ export default new Router({
       path: '/guardian',
       name: 'guardian',
       component: Guardian
+    },
+    {
+      path: '/academic-qualification',
+      name: 'academic-qualification',
+      component: AcademicQualification
+    },
+    {
+      path: '/professional-qualification',
+      name: 'professional-qualification',
+      component: ProfessionalQualification
+    },
+    {
+      path: '/professional-membership',
+      name: 'professional-membership',
+      component: ProfessionalMembership
     },
     {
       path: '/',

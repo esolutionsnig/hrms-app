@@ -40,6 +40,9 @@ const authDataNok = localStorage.getItem("curusernok")
 const authDataDep = localStorage.getItem("curuserdep")
 const authDataParent = localStorage.getItem("curuserparent")
 const authDataGuardian = localStorage.getItem("curuserguardian")
+const authDataAe = localStorage.getItem("curuserae")
+const authDataPe = localStorage.getItem("curuserpe")
+const authDataPm = localStorage.getItem("curuserpm")
 
 new Vue({
   router,
@@ -52,7 +55,10 @@ new Vue({
     curusernok: authDataNok ? JSON.parse(authDataNok) : {},
     curuserdep: authDataDep ? JSON.parse(authDataDep) : {},
     curuserparent: authDataParent ? JSON.parse(authDataParent) : {},
-    curuserguardian: authDataGuardian ? JSON.parse(authDataGuardian) : {}
+    curuserguardian: authDataGuardian ? JSON.parse(authDataGuardian) : {},
+    curuserae: authDataAe ? JSON.parse(authDataAe) : {},
+    curuserpe: authDataPe ? JSON.parse(authDataPe) : {},
+    curuserpm: authDataPm ? JSON.parse(authDataPm) : {}
   },
   render: h => h(App)
 }).$mount('#app')
