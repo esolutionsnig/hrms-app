@@ -354,7 +354,7 @@ export default {
           .then(response => {
             this.loading = false;
             this.$noty.success(
-              "Applicant Next Of Kin Successfully Updated."
+              "Next Of Kin Successfully Updated."
             );
             console.log(response.data);
             this.getNextOfKin()
@@ -390,7 +390,7 @@ export default {
           .then(response => {
             this.loading = false;
             this.$noty.success(
-              "Applicant Next Of Kin Successfully Created."
+              "Next Of Kin Successfully Created."
             );
             console.log(response.data);
             this.getNextOfKin()

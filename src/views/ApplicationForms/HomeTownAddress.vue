@@ -414,7 +414,7 @@ export default {
         )
           .then(response => {
             this.loading = false;
-            this.$noty.success("Applicant Home Town Address Successfully Updated.");
+            this.$noty.success("Home Town Address Successfully Updated.");
             console.log(response.data);
             this.getHomeTownAddress()
           })
@@ -450,7 +450,7 @@ export default {
         )
           .then(response => {
             this.loading = false;
-            this.$noty.success("Applicant Home Town Address Successfully Created.");
+            this.$noty.success("Home Town Address Successfully Created.");
             console.log(response.data);
             this.getHomeTownAddress()
           })

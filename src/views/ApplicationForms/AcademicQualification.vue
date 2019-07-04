@@ -215,7 +215,7 @@ export default {
             this.loading = false;
             this.disabled = 0
             console.log(response.data);
-            this.$noty.success("Applicant Academic Qualification Successfully Created.");
+            this.$noty.success("Academic Qualification Successfully Created.");
             this.getAcademicQualifications()
             setTimeout(() => location.reload(), 2000);
           })
@@ -241,7 +241,7 @@ export default {
         )
           .then(response => {
             this.deleting = false;
-            this.$noty.success("Applicant Academic Qualification Successfully Deleted.");
+            this.$noty.success("Academic Qualification Successfully Deleted.");
             console.log(response.data);
             this.getAcademicQualifications()
             setTimeout(() => location.reload(), 2000);

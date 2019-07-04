@@ -855,7 +855,7 @@ export default {
         )
           .then(response => {
             this.loading = false;
-            this.$noty.success("Applicant Data Manager Successfully Updated.");
+            this.$noty.success("Data Manager Successfully Updated.");
             console.log(response.data);
             this.getApplicantDataManagers()
           })
@@ -903,7 +903,7 @@ export default {
         )
           .then(response => {
             this.loading = false;
-            this.$noty.success("Applicant Data Manager Successfully Created.");
+            this.$noty.success("Data Manager Successfully Created.");
             console.log(response.data);
             this.getApplicantDataManagers()
           })

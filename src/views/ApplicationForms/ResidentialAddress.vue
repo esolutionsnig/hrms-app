@@ -453,7 +453,7 @@ export default {
         )
           .then(response => {
             this.loading = false;
-            this.$noty.success("Applicant Address Successfully Updated.");
+            this.$noty.success("Address Successfully Updated.");
             console.log(response.data);
             this.getResidentialAddress()
           })
@@ -490,7 +490,7 @@ export default {
         )
           .then(response => {
             this.loading = false;
-            this.$noty.success("Applicant Address Successfully Created.");
+            this.$noty.success("Address Successfully Created.");
             console.log(response.data);
             this.getResidentialAddress()
           })

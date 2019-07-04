@@ -329,6 +329,10 @@ export default {
       this.$root.curuserpe = {};
       localStorage.removeItem("curuserpm");
       this.$root.curuserpm = {};
+      localStorage.removeItem("curuserslc");
+      this.$root.curuserslc = {};
+      localStorage.removeItem("curusereh");
+      this.$root.curusereh = {};
       this.$noty.success("Successfully logged out");
       location.reload()
     }

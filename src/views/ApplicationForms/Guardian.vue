@@ -319,7 +319,7 @@ export default {
         )
           .then(response => {
             this.loading = false;
-            this.$noty.success("Applicant Guadian Successfully Updated.");
+            this.$noty.success("Guadian Successfully Updated.");
             console.log(response.data);
             this.getGuardian();
           })
@@ -352,7 +352,7 @@ export default {
         )
           .then(response => {
             this.loading = false;
-            this.$noty.success("Applicant Guardian Successfully Created.");
+            this.$noty.success("Guardian Successfully Created.");
             console.log(response.data);
             this.getGuardian();
           })

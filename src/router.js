@@ -18,6 +18,8 @@ import Guardian from './views/ApplicationForms/Guardian.vue'
 import AcademicQualification from './views/ApplicationForms/AcademicQualification.vue'
 import ProfessionalQualification from './views/ApplicationForms/ProfessionalQualification.vue'
 import ProfessionalMembership from './views/ApplicationForms/ProfessionalMembership.vue'
+import SchoolLeavingCertificate from './views/ApplicationForms/SchoolLeavingCertificate.vue'
+import EmploymentHistory from './views/ApplicationForms/EmploymentHistory.vue'
 
 Vue.use(Router)
 
@@ -74,6 +76,16 @@ export default new Router({
       path: '/professional-membership',
       name: 'professional-membership',
       component: ProfessionalMembership
+    },
+    {
+      path: '/school-leaving-certificate',
+      name: 'school-leaving-certificate',
+      component: SchoolLeavingCertificate
+    },
+    {
+      path: '/employment-history',
+      name: 'employment-history',
+      component: EmploymentHistory
     },
     {
       path: '/',

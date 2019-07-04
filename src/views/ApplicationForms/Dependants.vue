@@ -253,7 +253,7 @@ export default {
             this.loading = false;
             this.disabled = 0
             console.log(response.data);
-            this.$noty.success("Applicant Dependant Successfully Created.");
+            this.$noty.success("Dependant Successfully Created.");
             this.getDependants()
           })
           .catch(({ response }) => {
@@ -278,7 +278,7 @@ export default {
         )
           .then(response => {
             this.deleting = false;
-            this.$noty.success("Applicant Dependant Successfully Deleted.");
+            this.$noty.success("Dependant Successfully Deleted.");
             console.log(response.data);
             this.getDependants()
           })

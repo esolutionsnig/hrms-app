@@ -215,7 +215,7 @@ export default {
             this.loading = false;
             this.disabled = 0
             console.log(response.data);
-            this.$noty.success("Applicant Professional Qualification Successfully Created.");
+            this.$noty.success("Professional Qualification Successfully Created.");
             this.getProfessionalQualifications()
             setTimeout(() => location.reload(), 2000);
           })
@@ -241,7 +241,7 @@ export default {
         )
           .then(response => {
             this.deleting = false;
-            this.$noty.success("Applicant Professional Qualification Successfully Deleted.");
+            this.$noty.success("Professional Qualification Successfully Deleted.");
             console.log(response.data);
             this.getProfessionalQualifications()
             setTimeout(() => location.reload(), 2000);

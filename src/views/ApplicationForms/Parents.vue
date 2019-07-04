@@ -519,7 +519,7 @@ export default {
         )
           .then(response => {
             this.loading = false;
-            this.$noty.success("Applicant Parents Successfully Updated.");
+            this.$noty.success("Parents Successfully Updated.");
             console.log(response.data);
             this.getParents();
           })
@@ -558,7 +558,7 @@ export default {
         )
           .then(response => {
             this.loading = false;
-            this.$noty.success("Applicant Parent Successfully Created.");
+            this.$noty.success("Parent Successfully Created.");
             console.log(response.data);
             this.getParents();
           })
