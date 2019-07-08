@@ -20,6 +20,15 @@ import ProfessionalQualification from './views/ApplicationForms/ProfessionalQual
 import ProfessionalMembership from './views/ApplicationForms/ProfessionalMembership.vue'
 import SchoolLeavingCertificate from './views/ApplicationForms/SchoolLeavingCertificate.vue'
 import EmploymentHistory from './views/ApplicationForms/EmploymentHistory.vue'
+import NationalYouthServiceCorps from './views/ApplicationForms/NationalYouthServiceCorps.vue'
+import General from './views/ApplicationForms/General.vue'
+import Hobbies from './views/ApplicationForms/Hobbies.vue'
+import SocialMembership from './views/ApplicationForms/SocialMembership.vue'
+import Sport from './views/ApplicationForms/Sport.vue'
+import BankingDetail from './views/ApplicationForms/BankingDetail.vue'
+import SelfDisclosure from './views/ApplicationForms/SelfDisclosure.vue'
+import Referees from './views/ApplicationForms/Referees.vue'
+import EmploymentSelfAssessment from './views/ApplicationForms/EmploymentSelfAssessment.vue'
 
 Vue.use(Router)
 
@@ -86,6 +95,51 @@ export default new Router({
       path: '/employment-history',
       name: 'employment-history',
       component: EmploymentHistory
+    },
+    {
+      path: '/national-youth-service-corps',
+      name: 'national-youth-service-corps',
+      component: NationalYouthServiceCorps
+    },
+    {
+      path: '/general',
+      name: 'general',
+      component: General
+    },
+    {
+      path: '/hobbies',
+      name: 'hobbies',
+      component: Hobbies
+    },
+    {
+      path: '/social-membership',
+      name: 'social-membership',
+      component: SocialMembership
+    },
+    {
+      path: '/sport',
+      name: 'sport',
+      component: Sport
+    },
+    {
+      path: '/banking-details',
+      name: 'banking-details',
+      component: BankingDetail
+    },
+    {
+      path: '/self-disclosure',
+      name: 'self-disclosure',
+      component: SelfDisclosure
+    },
+    {
+      path: '/referees',
+      name: 'referees',
+      component: Referees
+    },
+    {
+      path: '/employment-self-assessment',
+      name: 'employment-self-assessment',
+      component: EmploymentSelfAssessment
     },
     {
       path: '/',

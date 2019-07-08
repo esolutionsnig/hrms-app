@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard">
-    <h2 class="grey--text primary--text text-uppercase display-1">Dependants</h2>
-    <h4 class="subheading">View and manage your dependants information</h4>
+    <h2 class="grey--text primary--text text-uppercase display-1">Social Membership</h2>
+    <h4 class="subheading">View and manage your social membership / voluntary organization information</h4>
 
     <v-container fluid grid-list-md>
       <v-layout row wrap>
@@ -26,10 +26,10 @@
                 class="elevation-1"
               >
                 <template v-slot:items="props">
-                  <td>{{ props.item.dependant_name }}</td>
-                  <td>{{ props.item.relationship }}</td>
-                  <td>{{ props.item.date_of_birth }}</td>
-                  <td>{{ props.item.gender }}</td>
+                  <td>{{ props.item.name }}</td>
+                  <td>{{ props.item.date }}</td>
+                  <td>{{ props.item.position }}</td>
+                  <td>{{ props.item.status }}</td>
                   <td>
                     <v-btn
                       :disabled="deleting"
@@ -53,7 +53,7 @@
             <v-card-actions class="blue-grey lighten-4">
               <v-spacer></v-spacer>
               <v-btn color="secondary" @click="disabled = (disabled + 1) % 2">
-                Create Dependant
+                Create Social Membership
                 <v-icon right>arrow_right_alt</v-icon>
               </v-btn>
             </v-card-actions>
@@ -67,9 +67,9 @@
                 <v-layout row wrap>
                   <v-flex xs12>
                     <v-text-field
-                      name="dependant_name"
-                      v-model="dependant_name"
-                      label="Dependant Name"
+                      name="name"
+                      v-model="name"
+                      label="Name"
                       type="text"
                       :rules="nameRules"
                       :disabled="disabled == 1 ? true : false"
@@ -80,11 +80,24 @@
                 <v-layout row wrap>
                   <v-flex xs12>
                     <v-text-field
-                      name="relationship"
-                      v-model="relationship"
-                      label="Relationship"
+                      name="date"
+                      v-model="date"
+                      label="Date"
                       type="text"
-                      :rules="relationshipRules"
+                      :rules="dateRules"
+                      :disabled="disabled == 1 ? true : false"
+                    ></v-text-field>
+                  </v-flex>
+                </v-layout>
+
+                <v-layout row wrap>
+                  <v-flex xs12>
+                    <v-text-field
+                      name="position"
+                      v-model="position"
+                      label="Position"
+                      type="text"
+                      :rules="positionRules"
                       :disabled="disabled == 1 ? true : false"
                     ></v-text-field>
                   </v-flex>
@@ -92,43 +105,12 @@
 
                 <v-layout row wrap>
                   <v-flex xs12 sm12>
-                    <v-dialog
-                      ref="dialog"
-                      v-model="modal"
-                      :return-value.sync="birth_date"
-                      persistent
-                      lazy
-                      full-width
-                      width="290px"
-                    >
-                      <template v-slot:activator="{ on }">
-                        <v-text-field
-                          v-model="birth_date"
-                          label="Date Of Birth Picker"
-                          prepend-icon="event"
-                          readonly
-                          v-on="on"
-                          :rules="birthDateRules"
-                          :disabled="disabled == 1 ? true : false"
-                        ></v-text-field>
-                      </template>
-                      <v-date-picker v-model="birth_date" scrollable>
-                        <v-spacer></v-spacer>
-                        <v-btn flat color="primary" @click="modal = false">Cancel</v-btn>
-                        <v-btn flat color="primary" @click="$refs.dialog.save(birth_date)">OK</v-btn>
-                      </v-date-picker>
-                    </v-dialog>
-                  </v-flex>
-                </v-layout>
-
-                <v-layout row wrap>
-                  <v-flex xs12 sm12>
                     <v-select
-                      name="gender"
-                      :items="genders"
-                      v-model="gender"
-                      label="Gender"
-                      :rules="genderRules"
+                      name="status"
+                      :items="statuses"
+                      v-model="status"
+                      label="Current Status"
+                      :rules="statusRules"
                       :disabled="disabled == 1 ? true : false"
                     ></v-select>
                   </v-flex>
@@ -163,7 +145,7 @@ export default {
 
   mounted() {
     // console.log(process.env)
-    this.getDependants();
+    this.getSocialMemberships();
   },
 
   data() {
@@ -176,57 +158,56 @@ export default {
           sortable: false,
           value: "name"
         },
-        { text: "Relationship", value: "relationship" },
-        { text: "Date Of Birth", value: "dob" },
-        { text: "Gender", value: "gender" },
+        { text: "Date", value: "date" },
+        { text: "Position", value: "position" },
+        { text: "Status", value: "status" },
         { text: "ACTION", value: "action" }
       ],
-      dependants: this.$root.curuserdep,
-      modal: false,
+      dependants: this.$root.curusersm,
       disabled: 1,
       loading: false,
       deleting: false,
       error: false,
       errors: {},
-      genders: ["Male", "Female", "Trans Gender", "Others"],
-      dep_id: "",
-      dependant_name: "",
-      relationship: "",
-      birth_date: "",
-      gender: "",
+      statuses: ["Active", "Inactive", "Suspended"],
+      sm_id: "",
+      name: "",
+      date: "",
+      position: "",
+      status: "",
       response: "",
-      nameRules: [v => !!v || "Full name is required"],
-      relationshipRules: [v => !!v || "Relationship is required"],
-      genderRules: [v => !!v || "Gender is required"],
-      birthDateRules: [v => !!v || "Date of birth is required"]
+      nameRules: [v => !!v || "Name is required"],
+      dateRules: [v => !!v || "Date is required"],
+      positionRules: [v => !!v || "Position is required"],
+      statusRules: [v => !!v || "Current Status is required"]
     };
   },
     
   computed: {
-    dep() {
-      return this.$root.curuserdep;
+    sm() {
+      return this.$root.curusersm;
     }
   },
 
   methods: {
     // Get Applicant Data From Api
-    getDependants() {
-      Axios.get(`${config.apiUrl}/users/${this.$root.curuser.id}/dependants`)
+    getSocialMemberships() {
+      Axios.get(`${config.apiUrl}/users/${this.$root.curuser.id}/socialmemberships`)
         .then(response => {
           if (response.data.data.length != 0) {
-            this.$root.curuserdep = response.data.data;
+            this.$root.curusersm = response.data.data;
             localStorage.setItem(
-              "curuserdep",
+              "curusersm",
               JSON.stringify(response.data.data)
             );
           } else {
             console.log("b");
-            this.$root.curuserdep = {};
+            this.$root.curusersm = {};
           }
         })
         .catch(response => {
           console.log(response.data);
-          localStorage.removeItem("curuserdep");
+          localStorage.removeItem("curusersm");
         });
     },
 
@@ -235,13 +216,13 @@ export default {
         this.loading = true;
         this.disabled = 1
         Axios.post(
-          `${config.apiUrl}/users/${this.$root.curuser.id}/dependants`,
+          `${config.apiUrl}/users/${this.$root.curuser.id}/socialmemberships`,
           {
             user_id: this.$root.curuser.id,
-            dependant_name: this.dependant_name,
-            relationship: this.relationship,
-            date_of_birth: this.birth_date,
-            gender: this.gender
+            name: this.name,
+            date: this.date,
+            position: this.position,
+            status: this.status
           },
           {
             headers: {
@@ -253,8 +234,8 @@ export default {
             this.loading = false;
             this.disabled = 0
             console.log(response.data);
-            this.$noty.success("Dependant Successfully Created.");
-            this.getDependants()
+            this.$noty.success("Social Membership Successfully Created.");
+            this.getSocialMemberships()
             setTimeout(() => location.reload(), 2000);
           })
           .catch(({ response }) => {
@@ -270,7 +251,7 @@ export default {
       if (id) {
         this.deleting = true;
         Axios.delete(
-          `${config.apiUrl}/users/${this.$root.curuser.id}/dependants/${id}`,
+          `${config.apiUrl}/users/${this.$root.curuser.id}/socialmemberships/${id}`,
           {
             headers: {
               Authorization: `Bearer ${this.$root.auth.access_token}`
@@ -279,9 +260,9 @@ export default {
         )
           .then(response => {
             this.deleting = false;
-            this.$noty.success("Dependant Successfully Deleted.");
+            this.$noty.success("Social Membership Successfully Deleted.");
             console.log(response.data);
-            this.getDependants()
+            this.getSocialMemberships()
             setTimeout(() => location.reload(), 2000);
           })
           .catch(({ response }) => {

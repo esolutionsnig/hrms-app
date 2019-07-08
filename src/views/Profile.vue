@@ -465,6 +465,7 @@ export default {
               );
             })
             .catch(({ response }) => {
+              console.log(response.data)
               this.loading = false;
               this.$noty.error(`Update failed ${response.data.message}`);
             })
@@ -509,6 +510,7 @@ export default {
           })
           .catch(({ response }) => {
             this.loading = false;
+            console.log(response.data)
             this.$noty.error(`Update failed ${response.data.message}`);
           });
       }
@@ -531,6 +533,7 @@ export default {
         )
           .then(response => {
             this.loading = false;
+            console.log(response.data)
             localStorage.clear();
             this.$noty.success("Password successfully updated.");
             setTimeout(() => location.reload(), 2000);
@@ -538,6 +541,7 @@ export default {
           .catch(({ response }) => {
             this.loading = false;
             this.$noty.error(`Update failed ${response.data.message}`);
+            console.log(response.data)
           });
       }
     }

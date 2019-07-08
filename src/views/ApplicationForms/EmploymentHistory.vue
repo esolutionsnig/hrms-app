@@ -11,106 +11,211 @@
               <h3>Current Data</h3>
             </v-card-title>
             <v-card-text>
-              <p class="subheading">To update your data click the CREATE/UPDATE button</p>
               <v-list two-line>
                 <div v-if="ehs">
                   <div class="elevation-1 my-3" v-for="eh in ehs" :key="eh.id">
-                    <v-layout row>
-                      <v-flex xs12 sm12 md12>
-                        <v-list-tile>
-                          <v-list-tile-content>
-                            <v-list-tile-sub-title>Employer</v-list-tile-sub-title>
-                            <v-list-tile-title>{{ eh.employer_name }}</v-list-tile-title>
-                          </v-list-tile-content>
-                        </v-list-tile>
-                      </v-flex>
-                    </v-layout>
+                    <div class="teal lighten-5" v-if="eh.end_date === 'Works Here'">
+                      <div class="pa-3"><h3 class="text-uppercase text-center">Currently Works Here</h3><hr></div>
+                      <v-layout row>
+                        <v-flex xs12 sm12 md12>
+                          <v-list-tile>
+                            <v-list-tile-content>
+                              <v-list-tile-sub-title>Employer</v-list-tile-sub-title>
+                              <v-list-tile-title>{{ eh.employer_name }}</v-list-tile-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-flex>
+                      </v-layout>
 
-                    <v-layout row>
-                      <v-flex xs12 sm8>
-                        <v-list-tile>
-                          <v-list-tile-content>
-                            <v-list-tile-sub-title>Contact Address</v-list-tile-sub-title>
-                            <v-list-tile-title>{{ eh.employer_address }}</v-list-tile-title>
-                          </v-list-tile-content>
-                        </v-list-tile>
-                      </v-flex>
-                    </v-layout>
+                      <v-layout row>
+                        <v-flex xs12 sm8>
+                          <v-list-tile>
+                            <v-list-tile-content>
+                              <v-list-tile-sub-title>Contact Address</v-list-tile-sub-title>
+                              <v-list-tile-title>{{ eh.employer_address }}</v-list-tile-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-flex>
+                      </v-layout>
 
-                    <v-layout row>
-                      <v-flex xs12 sm4>
-                        <v-list-tile>
-                          <v-list-tile-content>
-                            <v-list-tile-sub-title>Contact Phone</v-list-tile-sub-title>
-                            <v-list-tile-title>{{ eh.employer_phone }}</v-list-tile-title>
-                          </v-list-tile-content>
-                        </v-list-tile>
-                      </v-flex>
-                      <v-flex xs12 sm5>
-                        <v-list-tile>
-                          <v-list-tile-content>
-                            <v-list-tile-sub-title>Duration</v-list-tile-sub-title>
-                            <v-list-tile-title>
-                              {{ eh.start_date }}
-                              <v-icon>arrow_right_alt</v-icon>
-                              {{ eh.end_date }}
-                            </v-list-tile-title>
-                          </v-list-tile-content>
-                        </v-list-tile>
-                      </v-flex>
-                      <v-flex xs12 sm3>
-                        <v-list-tile>
-                          <v-list-tile-content>
-                            <v-list-tile-sub-title>Monthly Income</v-list-tile-sub-title>
-                            <v-list-tile-title>{{ eh.monthly_income }}</v-list-tile-title>
-                          </v-list-tile-content>
-                        </v-list-tile>
-                      </v-flex>
-                    </v-layout>
+                      <v-layout row>
+                        <v-flex xs12 sm4>
+                          <v-list-tile>
+                            <v-list-tile-content>
+                              <v-list-tile-sub-title>Contact Phone</v-list-tile-sub-title>
+                              <v-list-tile-title>{{ eh.employer_phone }}</v-list-tile-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-flex>
+                        <v-flex xs12 sm5>
+                          <v-list-tile>
+                            <v-list-tile-content>
+                              <v-list-tile-sub-title>Duration</v-list-tile-sub-title>
+                              <v-list-tile-title>
+                                {{ eh.start_date }}
+                                <v-icon>arrow_right_alt</v-icon>
+                                {{ eh.end_date }}
+                              </v-list-tile-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-flex>
+                        <v-flex xs12 sm3>
+                          <v-list-tile>
+                            <v-list-tile-content>
+                              <v-list-tile-sub-title>Monthly Income</v-list-tile-sub-title>
+                              <v-list-tile-title>{{ eh.monthly_income }}</v-list-tile-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-flex>
+                      </v-layout>
 
-                    <v-layout row>
-                      <v-flex xs12 sm8>
-                        <v-list-tile>
-                          <v-list-tile-content>
-                            <v-list-tile-sub-title>Job Function</v-list-tile-sub-title>
-                            <v-list-tile-title>{{ eh.job_function }}</v-list-tile-title>
-                          </v-list-tile-content>
-                        </v-list-tile>
-                      </v-flex>
-                      <v-flex xs12 sm4>
-                        <v-list-tile>
-                          <v-list-tile-content>
-                            <v-list-tile-sub-title>Job Grade</v-list-tile-sub-title>
-                            <v-list-tile-title>{{ eh.job_grade }}</v-list-tile-title>
-                          </v-list-tile-content>
-                        </v-list-tile>
-                      </v-flex>
-                    </v-layout>
+                      <v-layout row>
+                        <v-flex xs12 sm8>
+                          <v-list-tile>
+                            <v-list-tile-content>
+                              <v-list-tile-sub-title>Job Function</v-list-tile-sub-title>
+                              <v-list-tile-title>{{ eh.job_function }}</v-list-tile-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-flex>
+                        <v-flex xs12 sm4>
+                          <v-list-tile>
+                            <v-list-tile-content>
+                              <v-list-tile-sub-title>Job Grade</v-list-tile-sub-title>
+                              <v-list-tile-title>{{ eh.job_grade }}</v-list-tile-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-flex>
+                      </v-layout>
 
-                    <v-layout row>
-                      <v-flex xs12>
-                        <v-list-tile>
-                          <v-list-tile-content>
-                            <v-list-tile-sub-title>Reason For Leaving</v-list-tile-sub-title>
-                            <v-list-tile-title>{{ eh.reason_for_leaving }}</v-list-tile-title>
-                          </v-list-tile-content>
-                        </v-list-tile>
-                      </v-flex>
-                    </v-layout>
+                      <v-layout row>
+                        <v-flex xs12>
+                          <v-list-tile>
+                            <v-list-tile-content>
+                              <v-list-tile-sub-title>Reason For Leaving</v-list-tile-sub-title>
+                              <v-list-tile-title>{{ eh.reason_for_leaving }}</v-list-tile-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-flex>
+                      </v-layout>
 
-                    <v-layout row>
-                      <v-flex xs12 sm9>
-                        <v-btn @click="deleteRecord(eh.id)" color="primary--text">
-                          <v-icon left>delete_forever</v-icon>Delete
-                        </v-btn>
-                      </v-flex>
-                      <v-spacer></v-spacer>
-                      <v-flex xs12 sm3>
-                        <v-btn @click="editEmploymentHistory(eh.id, eh.employer_name, eh.employer_address, eh.employer_phone, eh.job_grade, eh.job_function, eh.start_date, eh.end_date, eh.monthly_income, eh.reason_for_leaving)">
-                          <v-icon left>edit</v-icon>Update
-                        </v-btn>
-                      </v-flex>
-                    </v-layout>
+                      <v-layout row>
+                        <v-flex xs12 sm9>
+                          <v-btn @click="deleteRecord(eh.id)" color="primary--text">
+                            <v-icon left>delete_forever</v-icon>Delete
+                          </v-btn>
+                        </v-flex>
+                        <v-spacer></v-spacer>
+                        <v-flex xs12 sm3>
+                          <v-btn
+                            @click="editEmploymentHistory(eh.id, eh.employer_name, eh.employer_address, eh.employer_phone, eh.job_grade, eh.job_function, eh.start_date, eh.end_date, eh.monthly_income, eh.reason_for_leaving)"
+                          >
+                            <v-icon left>edit</v-icon>Update
+                          </v-btn>
+                        </v-flex>
+                      </v-layout>
+                    </div>
+
+                    <div v-else>
+                      <v-layout row>
+                        <v-flex xs12 sm12 md12>
+                          <v-list-tile>
+                            <v-list-tile-content>
+                              <v-list-tile-sub-title>Employer</v-list-tile-sub-title>
+                              <v-list-tile-title>{{ eh.employer_name }}</v-list-tile-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-flex>
+                      </v-layout>
+
+                      <v-layout row>
+                        <v-flex xs12 sm8>
+                          <v-list-tile>
+                            <v-list-tile-content>
+                              <v-list-tile-sub-title>Contact Address</v-list-tile-sub-title>
+                              <v-list-tile-title>{{ eh.employer_address }}</v-list-tile-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-flex>
+                      </v-layout>
+
+                      <v-layout row>
+                        <v-flex xs12 sm4>
+                          <v-list-tile>
+                            <v-list-tile-content>
+                              <v-list-tile-sub-title>Contact Phone</v-list-tile-sub-title>
+                              <v-list-tile-title>{{ eh.employer_phone }}</v-list-tile-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-flex>
+                        <v-flex xs12 sm5>
+                          <v-list-tile>
+                            <v-list-tile-content>
+                              <v-list-tile-sub-title>Duration</v-list-tile-sub-title>
+                              <v-list-tile-title>
+                                {{ eh.start_date }}
+                                <v-icon>arrow_right_alt</v-icon>
+                                {{ eh.end_date }}
+                              </v-list-tile-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-flex>
+                        <v-flex xs12 sm3>
+                          <v-list-tile>
+                            <v-list-tile-content>
+                              <v-list-tile-sub-title>Monthly Income</v-list-tile-sub-title>
+                              <v-list-tile-title>{{ eh.monthly_income }}</v-list-tile-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-flex>
+                      </v-layout>
+
+                      <v-layout row>
+                        <v-flex xs12 sm8>
+                          <v-list-tile>
+                            <v-list-tile-content>
+                              <v-list-tile-sub-title>Job Function</v-list-tile-sub-title>
+                              <v-list-tile-title>{{ eh.job_function }}</v-list-tile-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-flex>
+                        <v-flex xs12 sm4>
+                          <v-list-tile>
+                            <v-list-tile-content>
+                              <v-list-tile-sub-title>Job Grade</v-list-tile-sub-title>
+                              <v-list-tile-title>{{ eh.job_grade }}</v-list-tile-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-flex>
+                      </v-layout>
+
+                      <v-layout row>
+                        <v-flex xs12>
+                          <v-list-tile>
+                            <v-list-tile-content>
+                              <v-list-tile-sub-title>Reason For Leaving</v-list-tile-sub-title>
+                              <v-list-tile-title>{{ eh.reason_for_leaving }}</v-list-tile-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-flex>
+                      </v-layout>
+
+                      <v-layout row>
+                        <v-flex xs12 sm9>
+                          <v-btn @click="deleteRecord(eh.id)" color="primary--text">
+                            <v-icon left>delete_forever</v-icon>Delete
+                          </v-btn>
+                        </v-flex>
+                        <v-spacer></v-spacer>
+                        <v-flex xs12 sm3>
+                          <v-btn
+                            @click="editEmploymentHistory(eh.id, eh.employer_name, eh.employer_address, eh.employer_phone, eh.job_grade, eh.job_function, eh.start_date, eh.end_date, eh.monthly_income, eh.reason_for_leaving)"
+                          >
+                            <v-icon left>edit</v-icon>Update
+                          </v-btn>
+                        </v-flex>
+                      </v-layout>
+                    </div>
                   </div>
                 </div>
               </v-list>
@@ -135,12 +240,7 @@
                   </v-flex>
                 </v-layout>
 
-                <v-text-field
-                      name="id"
-                      v-model="oldHistory.id"
-                      type="hidden"
-                      :rules="idRules"
-                    ></v-text-field>
+                <v-text-field name="id" v-model="oldHistory.id" type="hidden" :rules="idRules"></v-text-field>
 
                 <v-layout row wrap>
                   <v-flex xs12>
@@ -504,7 +604,7 @@ export default {
         reason_for_leaving: ""
       },
       oldHistory: {
-        id:"",
+        id: "",
         employer_name: "",
         employer_address: "",
         employer_phone: "",
@@ -609,18 +709,29 @@ export default {
       }
     },
 
-    editEmploymentHistory(empId, empName, empAddress, empPhone, jobGrade, jobFunction, startDate, endDate, monthlyIncome, reasonForLeaving){
-        this.isEditing = true
-        this.oldHistory.id = empId,
-        this.oldHistory.employer_name = empName,
-        this.oldHistory.employer_address = empAddress,
-        this.oldHistory.employer_phone = empPhone,
-        this.oldHistory.job_grade = jobGrade,
-        this.oldHistory.job_function = jobFunction,
-        this.oldHistory.start_date = startDate,
-        this.oldHistory.end_date = endDate,
-        this.oldHistory.monthly_income = monthlyIncome,
-        this.oldHistory.reason_for_leaving = reasonForLeaving
+    editEmploymentHistory(
+      empId,
+      empName,
+      empAddress,
+      empPhone,
+      jobGrade,
+      jobFunction,
+      startDate,
+      endDate,
+      monthlyIncome,
+      reasonForLeaving
+    ) {
+      this.isEditing = true;
+      (this.oldHistory.id = empId),
+        (this.oldHistory.employer_name = empName),
+        (this.oldHistory.employer_address = empAddress),
+        (this.oldHistory.employer_phone = empPhone),
+        (this.oldHistory.job_grade = jobGrade),
+        (this.oldHistory.job_function = jobFunction),
+        (this.oldHistory.start_date = startDate),
+        (this.oldHistory.end_date = endDate),
+        (this.oldHistory.monthly_income = monthlyIncome),
+        (this.oldHistory.reason_for_leaving = reasonForLeaving);
     },
 
     updateRecord() {
@@ -649,9 +760,7 @@ export default {
           .then(response => {
             this.loading = false;
             this.disabled = false;
-            this.$noty.success(
-              "Employment History Successfully Updated."
-            );
+            this.$noty.success("Employment History Successfully Updated.");
             console.log(response.data);
             this.getEmploymentHistory();
           })

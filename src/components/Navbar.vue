@@ -237,7 +237,7 @@ export default {
             {
               icon: "work_outline",
               text: "National Youth Service Corps",
-              route: "/nysc"
+              route: "/national-youth-service-corps"
             },
             {
               icon: "school",
@@ -255,6 +255,11 @@ export default {
               route: "/social-membership"
             },
             {
+              icon: "school",
+              text: "Sports - Recreation",
+              route: "/sport"
+            },
+            {
               icon: "account_balance",
               text: "Banking Details",
               route: "/banking-details"
@@ -268,11 +273,6 @@ export default {
               icon: "supervisor_account",
               text: "Referees",
               route: "/referees"
-            },
-            {
-              icon: "check_box",
-              text: "Declaration",
-              route: "/declaration"
             },
             {
               icon: "work",
@@ -333,6 +333,46 @@ export default {
       this.$root.curuserslc = {};
       localStorage.removeItem("curusereh");
       this.$root.curusereh = {};
+      localStorage.removeItem("curusernysc");
+      this.$root.curusernysc = {};
+      localStorage.removeItem("curusergen");
+      this.$root.curusergen = {};
+      localStorage.removeItem("curuserhob");
+      this.$root.curuserhob = {};
+      localStorage.removeItem("curusersm");
+      this.$root.curusersm = {};
+      localStorage.removeItem("curusersp");
+      this.$root.curusersp = {};
+      localStorage.removeItem("curuserbd");
+      this.$root.curuserbd = {};
+      localStorage.removeItem("curusersd");
+      this.$root.curusersd = {};
+      localStorage.removeItem("qt1");
+      this.$root.qt1 = {};
+      localStorage.removeItem("qt2");
+      this.$root.qt2 = {};
+      localStorage.removeItem("qt3");
+      this.$root.qt3 = {};
+      localStorage.removeItem("qt4");
+      this.$root.qt4 = {};
+      localStorage.removeItem("qt5");
+      this.$root.qt5 = {};
+      localStorage.removeItem("qt6");
+      this.$root.qt6 = {};
+      localStorage.removeItem("qt7");
+      this.$root.qt7 = {};
+      localStorage.removeItem("qt8");
+      this.$root.qt8 = {};
+      localStorage.removeItem("qt9");
+      this.$root.qt9 = {};
+      localStorage.removeItem("qt10");
+      this.$root.qt10 = {};
+      localStorage.removeItem("qt11");
+      this.$root.qt11 = {};
+      localStorage.removeItem("curuserref");
+      this.$root.curuserref = {};
+      localStorage.removeItem("curuseresa");
+      this.$root.curuseresa = {};
       this.$noty.success("Successfully logged out");
       location.reload()
     }

@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard">
-    <h2 class="grey--text primary--text text-uppercase display-1">Dependants</h2>
-    <h4 class="subheading">View and manage your dependants information</h4>
+    <h2 class="grey--text primary--text text-uppercase display-1">Banking Details</h2>
+    <h4 class="subheading">View and manage your banking detail information</h4>
 
     <v-container fluid grid-list-md>
       <v-layout row wrap>
@@ -21,15 +21,15 @@
             <v-card-text>
               <v-data-table
                 :headers="headers"
-                :items="dependants"
+                :items="bankingdetails"
                 :search="search"
                 class="elevation-1"
               >
                 <template v-slot:items="props">
-                  <td>{{ props.item.dependant_name }}</td>
-                  <td>{{ props.item.relationship }}</td>
-                  <td>{{ props.item.date_of_birth }}</td>
-                  <td>{{ props.item.gender }}</td>
+                  <td>{{ props.item.bank_name }}</td>
+                  <td>{{ props.item.account_number }}</td>
+                  <td>{{ props.item.account_status }}</td>
+                  <td>{{ props.item.bvn_number }}</td>
                   <td>
                     <v-btn
                       :disabled="deleting"
@@ -53,7 +53,7 @@
             <v-card-actions class="blue-grey lighten-4">
               <v-spacer></v-spacer>
               <v-btn color="secondary" @click="disabled = (disabled + 1) % 2">
-                Create Dependant
+                Create Banking Detail
                 <v-icon right>arrow_right_alt</v-icon>
               </v-btn>
             </v-card-actions>
@@ -67,9 +67,9 @@
                 <v-layout row wrap>
                   <v-flex xs12>
                     <v-text-field
-                      name="dependant_name"
-                      v-model="dependant_name"
-                      label="Dependant Name"
+                      name="bank_name"
+                      v-model="bank_name"
+                      label="Name Of Bank"
                       type="text"
                       :rules="nameRules"
                       :disabled="disabled == 1 ? true : false"
@@ -80,11 +80,25 @@
                 <v-layout row wrap>
                   <v-flex xs12>
                     <v-text-field
-                      name="relationship"
-                      v-model="relationship"
-                      label="Relationship"
+                      name="account_number"
+                      v-model="account_number"
+                      label="Account Number (NUBAN)"
                       type="text"
-                      :rules="relationshipRules"
+                      :counter="max"
+                      :rules="accountNumberRules"
+                      :disabled="disabled == 1 ? true : false"
+                    ></v-text-field>
+                  </v-flex>
+                </v-layout>
+
+                <v-layout row wrap>
+                  <v-flex xs12>
+                    <v-text-field
+                      name="bvn_number"
+                      v-model="bvn_number"
+                      label="Bank Verification Number (BVN)"
+                      type="text"
+                      :rules="bvnRules"
                       :disabled="disabled == 1 ? true : false"
                     ></v-text-field>
                   </v-flex>
@@ -92,43 +106,12 @@
 
                 <v-layout row wrap>
                   <v-flex xs12 sm12>
-                    <v-dialog
-                      ref="dialog"
-                      v-model="modal"
-                      :return-value.sync="birth_date"
-                      persistent
-                      lazy
-                      full-width
-                      width="290px"
-                    >
-                      <template v-slot:activator="{ on }">
-                        <v-text-field
-                          v-model="birth_date"
-                          label="Date Of Birth Picker"
-                          prepend-icon="event"
-                          readonly
-                          v-on="on"
-                          :rules="birthDateRules"
-                          :disabled="disabled == 1 ? true : false"
-                        ></v-text-field>
-                      </template>
-                      <v-date-picker v-model="birth_date" scrollable>
-                        <v-spacer></v-spacer>
-                        <v-btn flat color="primary" @click="modal = false">Cancel</v-btn>
-                        <v-btn flat color="primary" @click="$refs.dialog.save(birth_date)">OK</v-btn>
-                      </v-date-picker>
-                    </v-dialog>
-                  </v-flex>
-                </v-layout>
-
-                <v-layout row wrap>
-                  <v-flex xs12 sm12>
                     <v-select
-                      name="gender"
-                      :items="genders"
-                      v-model="gender"
-                      label="Gender"
-                      :rules="genderRules"
+                      name="account_status"
+                      :items="statuses"
+                      v-model="account_status"
+                      label="Account Status"
+                      :rules="statusRules"
                       :disabled="disabled == 1 ? true : false"
                     ></v-select>
                   </v-flex>
@@ -163,7 +146,7 @@ export default {
 
   mounted() {
     // console.log(process.env)
-    this.getDependants();
+    this.getBankingDetails();
   },
 
   data() {
@@ -171,62 +154,65 @@ export default {
       search: "",
       headers: [
         {
-          text: "Dependant's Name",
+          text: "Name Of Bank",
           align: "left",
           sortable: false,
-          value: "name"
+          value: "bank_name"
         },
-        { text: "Relationship", value: "relationship" },
-        { text: "Date Of Birth", value: "dob" },
-        { text: "Gender", value: "gender" },
+        { text: "Account Number (NUBAN)", value: "account_number" },
+        { text: "Bank Verification Number (BVN)", value: "bvn_number" },
+        { text: "Account Status", value: "account_status" },
         { text: "ACTION", value: "action" }
       ],
-      dependants: this.$root.curuserdep,
-      modal: false,
+      bankingdetails: this.$root.curuserbd,
       disabled: 1,
       loading: false,
       deleting: false,
       error: false,
       errors: {},
-      genders: ["Male", "Female", "Trans Gender", "Others"],
-      dep_id: "",
-      dependant_name: "",
-      relationship: "",
-      birth_date: "",
-      gender: "",
+      max: 10,
+      statuses: ["Active", "Inactive", "Suspended"],
+      bd_id: "",
+      bank_name: "",
+      account_number: "",
+      account_status: "",
+      bvn_number: "",
       response: "",
-      nameRules: [v => !!v || "Full name is required"],
-      relationshipRules: [v => !!v || "Relationship is required"],
-      genderRules: [v => !!v || "Gender is required"],
-      birthDateRules: [v => !!v || "Date of birth is required"]
+      nameRules: [v => !!v || "Name 0f bank is required"],
+      accountNumberRules: [
+          v => !!v || "Account number is required",
+          v => v.length == 10 || 'Account number must be less than 10 characters'
+      ],
+      bvnRules: [v => !!v || "Bank verification number is required"],
+      statusRules: [v => !!v || "Account status is required"]
     };
   },
     
   computed: {
-    dep() {
-      return this.$root.curuserdep;
+    bd() {
+      return this.$root.curuserbd;
     }
   },
 
   methods: {
     // Get Applicant Data From Api
-    getDependants() {
-      Axios.get(`${config.apiUrl}/users/${this.$root.curuser.id}/dependants`)
+    getBankingDetails() {
+      Axios.get(`${config.apiUrl}/users/${this.$root.curuser.id}/bankingdetails`)
         .then(response => {
           if (response.data.data.length != 0) {
-            this.$root.curuserdep = response.data.data;
+            this.$root.curuserbd = response.data.data;
             localStorage.setItem(
-              "curuserdep",
+              "curuserbd",
               JSON.stringify(response.data.data)
             );
           } else {
             console.log("b");
-            this.$root.curuserdep = {};
+            this.$root.curuserbd = {};
           }
         })
         .catch(response => {
           console.log(response.data);
-          localStorage.removeItem("curuserdep");
+          localStorage.removeItem("curuserbd");
         });
     },
 
@@ -235,13 +221,13 @@ export default {
         this.loading = true;
         this.disabled = 1
         Axios.post(
-          `${config.apiUrl}/users/${this.$root.curuser.id}/dependants`,
+          `${config.apiUrl}/users/${this.$root.curuser.id}/bankingdetails`,
           {
             user_id: this.$root.curuser.id,
-            dependant_name: this.dependant_name,
-            relationship: this.relationship,
-            date_of_birth: this.birth_date,
-            gender: this.gender
+            bank_name: this.bank_name,
+            account_number: this.account_number,
+            account_status: this.account_status,
+            bvn_number: this.bvn_number
           },
           {
             headers: {
@@ -253,15 +239,15 @@ export default {
             this.loading = false;
             this.disabled = 0
             console.log(response.data);
-            this.$noty.success("Dependant Successfully Created.");
-            this.getDependants()
+            this.$noty.success("Banking Detail Successfully Created.");
+            this.getBankingDetails()
             setTimeout(() => location.reload(), 2000);
           })
           .catch(({ response }) => {
             console.log(response.data);
             this.loading = false;
             this.disabled = 0
-            this.$noty.error(`Update failed ${response.data.message}`);
+            this.$noty.error(`Saving failed ${response.data.message}`);
           });
       }
     },
@@ -270,7 +256,7 @@ export default {
       if (id) {
         this.deleting = true;
         Axios.delete(
-          `${config.apiUrl}/users/${this.$root.curuser.id}/dependants/${id}`,
+          `${config.apiUrl}/users/${this.$root.curuser.id}/bankingdetails/${id}`,
           {
             headers: {
               Authorization: `Bearer ${this.$root.auth.access_token}`
@@ -279,15 +265,15 @@ export default {
         )
           .then(response => {
             this.deleting = false;
-            this.$noty.success("Dependant Successfully Deleted.");
+            this.$noty.success("Banking Detail Successfully Deleted.");
             console.log(response.data);
-            this.getDependants()
+            this.getBankingDetails()
             setTimeout(() => location.reload(), 2000);
           })
           .catch(({ response }) => {
             console.log(response.data);
             this.deleting = false;
-            this.$noty.error(`Update failed ${response.data.message}`);
+            this.$noty.error(`Deletion failed ${response.data.message}`);
           });
       }
     }
